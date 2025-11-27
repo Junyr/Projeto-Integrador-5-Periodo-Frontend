@@ -1,0 +1,34 @@
+<p-toast></p-toast>
+
+<div class="form-container">
+  <p-card header="Cadastro">
+    <div>
+        <span class="p-float-label">
+            <label for="nome">Nome Completo</label>
+            <div>
+                <input id="nome" type="text" pInputText [(ngModel)]="usuario.nome" />
+            </div>
+        </span>
+
+      <span class="p-float-label">
+            <label for="email">E-mail</label>
+            <div>
+                <input id="email" type="text" pInputText [(ngModel)]="usuario.email" />
+            </div>
+        </span>
+
+      <span class="p-float-label">
+            <label for="senha">Senha</label>
+            <div>
+                <input id="senha" type="password" pInputText [(ngModel)]="usuario.senha" />
+            </div>
+        </span>
+
+      <div class="button-group">
+        <p-button label="Cadastrar" (onClick)="cadastrar()"></p-button>
+        <p-button label="Voltar" (onClick)="voltar()"></p-button>
+      </div>
+
+    </div>
+  </p-card>
+</div>
