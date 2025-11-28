@@ -1,0 +1,6 @@
+<p-toast></p-toast>
+
+<ng-container *ngIf="getIsAuthorized()">
+  <p *ngIf="usuario as u"> {{ u.nome }} </p>
+  <p-button label="Sair" (onClick)="sair()"></p-button>
+</ng-container>

@@ -25,7 +25,11 @@ import { MessageService } from 'primeng/api';
 })
 export class CadastroComponent {
 
-  usuario: Usuario = new Usuario();
+  usuario: Usuario = {
+    email: '',
+    nome: '',
+    senha: ''
+  };
 
   constructor(
     private usuarioService: UsuarioService,

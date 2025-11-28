@@ -1,4 +1,4 @@
-export class UsuarioRequestDTO {
-  email: string = '';
-  senha: string = '';
+export interface UsuarioRequestDTO {
+  email: string;
+  senha: string;
 }

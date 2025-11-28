@@ -1,6 +1,6 @@
-export class Usuario {
+export interface Usuario {
   id?: number;
-  nome: string = '';
-  email: string = '';
-  senha: string = '';
+  nome: string;
+  email: string;
+  senha: string;
 }

@@ -1,10 +1,13 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './components/usuario/login/login.component';
 import { CadastroComponent } from './components/usuario/cadastro/cadastro.component';
+import {HomeComponent} from './components/pontoColeta/home/home.component';
+import {authGuard} from './guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
+  { path: 'home', component: HomeComponent, canActivate: [authGuard] }
 ];

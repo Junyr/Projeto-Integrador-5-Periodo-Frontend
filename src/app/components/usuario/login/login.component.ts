@@ -6,6 +6,9 @@ import {Button} from 'primeng/button';
 import {UsuarioRequestDTO} from '../../../entity/UsuarioRequestDTO';
 import {UsuarioService} from '../../../service/usuario-service';
 import {Router} from '@angular/router';
+import { Toast } from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+
 
 @Component({
   selector: 'app-login',
@@ -14,7 +17,8 @@ import {Router} from '@angular/router';
     Card,
     InputText,
     FormsModule,
-    Button
+    Button,
+    Toast
   ],
   templateUrl: './login.component.html',
   styleUrl: '../../../template/templateForm.scss',
@@ -22,18 +26,35 @@ import {Router} from '@angular/router';
 
 export class LoginComponent {
 
-  usuario: UsuarioRequestDTO = new UsuarioRequestDTO();
+  usuario: UsuarioRequestDTO = {
+    email: '',
+    senha: ''
+  };
 
-  constructor(private usuarioService: UsuarioService, private router: Router) {
-  }
+  constructor(
+    private usuarioService: UsuarioService,
+    private router: Router,
+    private messageService: MessageService) {}
 
   protected login() {
     this.usuarioService.validarUsuario(this.usuario).subscribe({
-      next: result => {
-        this.router.navigate(['cadastro']);
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Usuário logado com sucesso!'
+        });
+
+        setTimeout(() => {
+          this.router.navigate(['home']);
+        }, 0);
       },
-      error: error => {
-        console.log(error);
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err.error?.message || 'Erro ao logar!'
+        });
       }
     });
   }
