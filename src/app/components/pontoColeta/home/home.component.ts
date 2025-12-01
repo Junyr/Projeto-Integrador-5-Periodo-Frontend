@@ -12,8 +12,11 @@ import {ResiduosService} from '../../../service/residuos-service';
 import {Residuo} from '../../../entity/Residuo';
 import {Caminhao} from '../../../entity/Caminhao';
 import {CaminhaoService} from '../../../service/caminhao-service';
-import {Select} from 'primeng/select';
 import {FormsModule} from '@angular/forms';
+import {Bairro} from '../../../entity/Bairro';
+import {BairroService} from '../../../service/bairro-service';
+import {PontoColetaService} from '../../../service/ponto-coleta-service';
+import {PontoColeta} from '../../../entity/PontoColeta';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +28,6 @@ import {FormsModule} from '@angular/forms';
     ButtonModule,
     DialogModule,
     PickListModule,
-    Select,
     FormsModule
   ],
   templateUrl: './home.component.html',
@@ -35,28 +37,20 @@ export class HomeComponent implements OnInit {
 
   files: TreeNode[] = [];
   cols: any[] = [];
-  modalEditar = false;
-  rotaSelecionada: any;
 
-  caminhaoDisponiveis: Caminhao[] = [];
-  caminhaoSelecionada: Caminhao = {
-    placa: '',
-    motorista: '',
-    capacidade: 0,
-    tiposResiduos: []
-  };
-
-  ruasDisponiveis: Rua[] = [];
-  ruasSelecionadas: Rua[] = [];
-
-  residuosDisponiveis: Residuo[] = [];
-  residuosSelecionados: Residuo[] = [];
+  caminhoesMap = new Map<number, Caminhao>();
+  bairrosMap = new Map<number, Bairro>();
+  ruasMap = new Map<number, Rua>();
+  residuoMap = new Map<number, Residuo>();
+  pontoColetaMap = new Map<number, PontoColeta>();
 
   constructor(
     private rotaService: RotaService,
     private ruaService: RuasService,
     private residuoService: ResiduosService,
-    private caminhaoService: CaminhaoService) {}
+    private caminhaoService: CaminhaoService,
+    private bairroService: BairroService,
+    private pontoColetaService: PontoColetaService) {}
 
   ngOnInit() {
     this.cols = [
@@ -68,55 +62,109 @@ export class HomeComponent implements OnInit {
   }
 
   carregarTree() {
-    this.rotaService.listar().subscribe((rotas) => {
-      this.files = rotas.map(rota => ({
-        data: {
-          id: rota.id,
-          caminhaoId: rota.caminhaoId,
-          bairros: rota.bairros,
-          ruas: rota.ruas,
-          tiposResiduos: rota.tiposResiduos,
-          nome: `Rota #${rota.id}`,
-          valor: `Distância: ${rota.distanciaTotal} km`
-        },
-        children: [
-          { data: { nome: 'Caminhão', valor: rota.caminhaoId } },
-          { data: { nome: 'Bairros', valor: rota.bairros.join(', ') } },
-          { data: { nome: 'Ruas', valor: rota.ruas.join(', ') } },
-          { data: { nome: 'Tipos de Resíduos', valor: rota.tiposResiduos.join(', ') } }
-        ]
-      }));
-    });
-  }
+    this.caminhaoService.listar().subscribe(caminhao => {
+      caminhao.forEach(c => this.caminhoesMap.set(c.id!, c));
 
-  abrirEdicao(node: any) {
+      this.pontoColetaService.listar().subscribe(ponto => {
+        ponto.forEach(p => {this.pontoColetaMap.set(p.id!, p)});
 
-    this.rotaSelecionada = node.data;
-    this.modalEditar = true;
+        this.bairroService.listar().subscribe(bairro => {
+          bairro.forEach(b => this.bairrosMap.set(b.id!, b));
 
-    this.caminhaoService.listar().subscribe((caminhao) => {
-      this.caminhaoDisponiveis = caminhao;
+          this.ruaService.listar().subscribe(ruas => {
+            ruas.forEach(r => {this.ruasMap.set(r.id!, r)});
 
-      this.caminhaoSelecionada = this.caminhaoDisponiveis.find(
-        c => c.id === this.rotaSelecionada.caminhaoId
-      )!;
-    });
+            this.residuoService.listar().subscribe(residuo => {
+              residuo.forEach(re => {this.residuoMap.set(re.id!, re)});
 
-    this.ruaService.listar().subscribe((ruas: Rua[]) => {
-      this.ruasDisponiveis = ruas;
+              this.rotaService.listar().subscribe((rotas) => {
+                this.files = rotas.map(rota => ({
+                  data: {
+                    nome: `Rota #${rota.id}`,
+                    valor: `Distância: ${rota.distanciaTotal} km`
+                  },
+                  children: [
+                    {
+                      data: {
+                        nome: `${this.caminhoesMap.get(rota.caminhaoId)?.motorista}`,
+                        valor: this.caminhoesMap.get(rota.caminhaoId)?.placa ?? '-'
+                      }
+                    },
 
-      this.ruasSelecionadas = ruas.filter(rua =>
-        this.rotaSelecionada?.ruas?.includes(rua.id)
-      );
-    });
+                    {
+                      data: {
+                        nome: 'Ponto de Coleta',
+                        valor: ''
+                      },
+                      children: [
+                        {
+                          data: {
+                            nome: 'Origem',
+                            valor:
+                              Array.from(this.pontoColetaMap.values())
+                                .find(p => p.bairroId === rota.bairros[0])
+                                ?.nome ?? 'Sem ponto de coleta'
+                          }
+                        },
+                        {
+                          data: {
+                            nome: 'Destino',
+                            valor:
+                              Array.from(this.pontoColetaMap.values())
+                                .find(p => p.bairroId === rota.bairros[rota.bairros.length - 1])
+                                ?.nome ?? 'Sem ponto de coleta'
+                          }
+                        }
+                      ]
+                    },
 
-    this.residuoService.listar().subscribe((residuos: Residuo[]) => {
-      this.residuosDisponiveis = residuos;
+                    {
+                      data: {
+                        nome: 'Bairros',
+                        valor: rota.bairros?.length ?? 0
+                      },
+                      children: rota.bairros?.map((idBairro: number) => ({
+                        data: {
+                          nome: '',
+                          valor: this.bairrosMap.get(idBairro)?.nome,
+                        }
+                      }))
+                    },
+                    {
+                      data: {
+                        nome: 'Ruas',
+                        valor: rota.ruas?.length ?? 0
+                      },
+                      children: rota.ruas?.map((idRua: number) => ({
+                        data: {
+                          nome: '',
+                          valor: `${this.ruasMap.get(idRua)?.origem.nome}
+                       → ${this.ruasMap.get(idRua)?.destino.nome}
+                       (${this.ruasMap.get(idRua)?.distanciaKm} km)`
+                        }
+                      }))
+                    },
+                    {
+                      data: {
+                        nome: 'Tipos de Resíduos',
+                        valor: rota.tiposResiduos?.length ?? 0
+                      },
+                      children: rota.tiposResiduos?.map((idResiduo: number) => ({
+                        data: {
+                          nome: '',
+                          valor: `${this.residuoMap.get(idResiduo)?.tipo}`
+                        }
+                      }))
+                    }
+                  ]
+                }));
+              });
+            })
+          })
+        })
 
-      this.residuosSelecionados = residuos.filter(res =>
-        this.rotaSelecionada?.tiposResiduos?.includes(res.id)
-      );
-    });
+      })
+    })
   }
 
   deletar(id: number) {
@@ -125,8 +173,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-
-  protected salvarEdicao() {
+  protected atualizarRota(rowNode: any) {
 
   }
 }

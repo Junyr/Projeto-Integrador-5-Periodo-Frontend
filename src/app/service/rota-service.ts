@@ -16,6 +16,14 @@ export class RotaService {
     return this.http.get<Rota[]>(`${this.apiUrl}/listar`);
   }
 
+  buscar(id: number): Observable<Rota> {
+    return this.http.get<Rota>(`${this.apiUrl}/buscar/${id}`);
+  }
+
+  atualizar(id: number, rota: Rota): Observable<Rota> {
+    return this.http.put<Rota>(`${this.apiUrl}/atualizar/${id}`, rota);
+  }
+
   deletar(id: number) {
     return this.http.delete(`${this.apiUrl}/deletar/${id}`);
   }

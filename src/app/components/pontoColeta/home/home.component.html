@@ -27,7 +27,7 @@
           rounded="true"
           severity="success"
           [style]="{ 'margin-right': '.5em' }"
-          (click)="abrirEdicao(rowNode)">
+          (click)="atualizarRota(rowNode)">
         </p-button>
 
         <p-button
@@ -48,68 +48,3 @@
   </ng-template>
 
 </p-treetable>
-
-<p-dialog
-  header="Editar Rota"
-  [(visible)]="modalEditar"
-  [modal]="true"
-  [style]="{width: '70vw'}">
-
-  <h4>Caminhão</h4>
-  <p-select
-    [options]="caminhaoDisponiveis"
-    [(ngModel)]="caminhaoSelecionada"
-    [checkmark]="true"
-    optionLabel="placa"
-    [showClear]="true"
-    placeholder="Selecione o caminhão"
-    class="w-full md:w-56">
-
-    <ng-template pTemplate="item" let-caminhao>
-      {{ caminhao | json }}
-    </ng-template>
-    <!--
-    <ng-template pTemplate="item" let-caminhao>
-      {{ caminhao.placa }}
-    </ng-template>
-    !-->
-  </p-select>
-
-
-  <h4>Ruas</h4>
-  <p-pickList
-    [source]="ruasDisponiveis"
-    [target]="ruasSelecionadas"
-    sourceHeader="Disponíveis"
-    targetHeader="Selecionadas">
-
-    <ng-template pTemplate="item" let-rua>
-      Rua {{ rua.id }} -
-      {{ rua.origem?.nome }} → {{ rua.destino?.nome }}
-      ({{ rua.distanciaKm }} km)
-    </ng-template>
-
-  </p-pickList>
-
-  <h4>Tipos de Resíduos</h4>
-  <p-pickList
-    [source]="residuosDisponiveis"
-    [target]="residuosSelecionados"
-    sourceHeader="Disponíveis"
-    targetHeader="Selecionadas">
-
-    <ng-template pTemplate="item" let-residuo>
-      {{ residuo.tipo }}
-    </ng-template>
-  </p-pickList>
-
-  <div class="flex justify-content-end mt-4">
-    <p-button
-      label="Salvar"
-      icon="pi pi-check"
-      (click)="salvarEdicao()">
-    </p-button>
-  </div>
-
-</p-dialog>
-

@@ -16,6 +16,10 @@ export class ResiduosService {
     return this.http.get<Residuo[]>(`${this.apiUrl}/listar`);
   }
 
+  buscar(id: number) {
+    return this.http.get(`${this.apiUrl}/buscar/${id}`);
+  }
+
   deletar(id: number) {
     return this.http.delete(`${this.apiUrl}/deletar/${id}`);
   }
