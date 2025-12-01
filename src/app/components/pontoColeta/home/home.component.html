@@ -27,7 +27,7 @@
           rounded="true"
           severity="success"
           [style]="{ 'margin-right': '.5em' }"
-          (click)="atualizarRota(rowNode)">
+          (onClick)="atualizarRota(rowNode.node.data.id)">
         </p-button>
 
         <p-button
@@ -35,7 +35,7 @@
           icon="pi pi-trash"
           rounded="true"
           severity="danger"
-          (click)="deletar(rowNode.data?.id)">
+          (click)="deletar(rowNode.node.data.id)">
         </p-button>
       </td>
     </tr>

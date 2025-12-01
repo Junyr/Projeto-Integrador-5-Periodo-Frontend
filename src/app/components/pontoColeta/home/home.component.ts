@@ -17,6 +17,7 @@ import {Bairro} from '../../../entity/Bairro';
 import {BairroService} from '../../../service/bairro-service';
 import {PontoColetaService} from '../../../service/ponto-coleta-service';
 import {PontoColeta} from '../../../entity/PontoColeta';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -50,7 +51,8 @@ export class HomeComponent implements OnInit {
     private residuoService: ResiduosService,
     private caminhaoService: CaminhaoService,
     private bairroService: BairroService,
-    private pontoColetaService: PontoColetaService) {}
+    private pontoColetaService: PontoColetaService,
+    private router: Router) {}
 
   ngOnInit() {
     this.cols = [
@@ -80,6 +82,7 @@ export class HomeComponent implements OnInit {
               this.rotaService.listar().subscribe((rotas) => {
                 this.files = rotas.map(rota => ({
                   data: {
+                    id: rota.id,
                     nome: `Rota #${rota.id}`,
                     valor: `Distância: ${rota.distanciaTotal} km`
                   },
@@ -173,7 +176,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  protected atualizarRota(rowNode: any) {
-
+  protected atualizarRota(id: number) {
+    this.router.navigate(['/rota/atualizar', id]);
   }
 }

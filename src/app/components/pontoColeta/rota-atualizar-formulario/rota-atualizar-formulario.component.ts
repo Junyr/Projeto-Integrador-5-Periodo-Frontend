@@ -11,6 +11,8 @@ import {CaminhaoService} from '../../../service/caminhao-service';
 import {PontoColetaService} from '../../../service/ponto-coleta-service';
 import {Rota} from '../../../entity/Rota';
 import {Select} from 'primeng/select';
+import {MultiSelect} from 'primeng/multiselect';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-rota-atualizar-formulario.component',
@@ -18,7 +20,9 @@ import {Select} from 'primeng/select';
     Card,
     FormsModule,
     Toast,
-    Select
+    Select,
+    MultiSelect,
+    Button
   ],
   templateUrl: './rota-atualizar-formulario.component.html',
   styleUrl: '../../../template/templateForm.scss',
@@ -75,16 +79,14 @@ export class RotaAtualizarFormularioComponent implements OnInit {
 
 
   onSelecionarCaminhao() {
-    /*
     const tipos = this.caminhaoSelecionado.tiposResiduos;
 
     this.pontosOrigemFiltrados = Array.from(this.pontoColetaMap.values())
-      .filter(p => p.tiposResiduos.some(t => tipos.includes(t)));
+      .filter(p => p.tiposResiduos.some(t => tipos.includes(t.id!)));
 
     this.pontoColetaOrigem = undefined!;
     this.pontoColetaDestino = undefined!;
     this.residuosSelecionados = [];
-    */
   }
 
 
