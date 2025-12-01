@@ -1,0 +1,107 @@
+<p-toast></p-toast>
+
+<div class="form-container">
+  <p-card header="Atualizar Rota">
+
+    <!-- ✅ CAMINHÃO -->
+    <span class="p-float-label">
+      <p-select
+        [options]="caminhaoDisponivel"
+        [(ngModel)]="caminhaoSelecionado"
+        optionLabel="placa"
+        [filter]="true"
+        filterBy="placa"
+        placeholder="Selecione um caminhão"
+        class="w-full"
+        (onChange)="onSelecionarCaminhao()"
+      >
+        <ng-template #selectedItem let-item>
+          <div class="flex items-center gap-2">
+            <div>{{ item.motorista }} - {{ item.placa }}</div>
+          </div>
+        </ng-template>
+
+        <ng-template #item let-caminhao>
+          <div class="flex items-center gap-2">
+            <div>{{ caminhao.motorista }} - {{ caminhao.placa }}</div>
+          </div>
+        </ng-template>
+      </p-select>
+      <label>Caminhão</label>
+    </span>
+
+
+    <!-- ✅ ORIGEM -->
+    <span class="p-float-label">
+      <p-select
+        [options]="pontosOrigemFiltrados"
+        [(ngModel)]="pontoColetaOrigem"
+        optionLabel="nome"
+        [filter]="true"
+        filterBy="nome"
+        placeholder="Selecione a origem"
+        class="w-full"
+        [disabled]="!caminhaoSelecionado"
+        (onChange)="onOrigemSelecionada()"
+      >
+        <ng-template #selectedItem let-item>
+          <div>{{ item?.nome }}</div>
+        </ng-template>
+
+        <ng-template #item let-ponto>
+          <div>{{ ponto.nome }}</div>
+        </ng-template>
+      </p-select>
+      <label>Ponto de Origem</label>
+    </span>
+
+
+    <!-- ✅ DESTINO -->
+    <span class="p-float-label">
+      <p-select
+        [options]="pontosDestinoFiltrados"
+        [(ngModel)]="pontoColetaDestino"
+        optionLabel="nome"
+        [filter]="true"
+        filterBy="nome"
+        placeholder="Selecione o destino"
+        class="w-full"
+        [disabled]="!pontoColetaOrigem"
+        (onChange)="onDestinoSelecionado()"
+      >
+        <ng-template #selectedItem let-item>
+          <div>{{ item?.nome }}</div>
+        </ng-template>
+
+        <ng-template #item let-ponto>
+          <div>{{ ponto.nome }}</div>
+        </ng-template>
+      </p-select>
+      <label>Ponto de Destino</label>
+    </span>
+
+
+    <!-- ✅ RESÍDUOS -->
+    <span class="p-float-label">
+      <p-multiSelect
+        [options]="residuosFiltrados"
+        optionLabel="tipo"
+        [(ngModel)]="residuosSelecionados"
+        [filter]="true"
+        filterBy="tipo"
+        class="w-full"
+        [disabled]="!pontoColetaDestino"
+        placeholder="Selecione os resíduos"
+      >
+      </p-multiSelect>
+      <label>Resíduos</label>
+    </span>
+
+
+    <div class="button-group">
+      <p-button label="Atualizar" (click)="atualizar()"></p-button>
+      <p-button label="Voltar" (click)="voltar()"></p-button>
+    </div>
+
+  </p-card>
+</div>
