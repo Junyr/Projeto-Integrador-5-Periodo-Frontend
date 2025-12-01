@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Button} from "primeng/button";
 import {Card} from "primeng/card";
-import {FormBuilder, FormGroup, FormsModule} from "@angular/forms";
-import {InputText} from "primeng/inputtext";
+import {FormsModule} from "@angular/forms";
 import {Toast} from "primeng/toast";
 import {PontoColeta} from '../../../entity/PontoColeta';
 import {Residuo} from '../../../entity/Residuo';
@@ -17,7 +15,6 @@ import {Select} from 'primeng/select';
 @Component({
   selector: 'app-rota-atualizar-formulario.component',
   imports: [
-    Button,
     Card,
     FormsModule,
     Toast,
@@ -76,8 +73,9 @@ export class RotaAtualizarFormularioComponent implements OnInit {
     });
   }
 
-  /*
+
   onSelecionarCaminhao() {
+    /*
     const tipos = this.caminhaoSelecionado.tiposResiduos;
 
     this.pontosOrigemFiltrados = Array.from(this.pontoColetaMap.values())
@@ -86,8 +84,9 @@ export class RotaAtualizarFormularioComponent implements OnInit {
     this.pontoColetaOrigem = undefined!;
     this.pontoColetaDestino = undefined!;
     this.residuosSelecionados = [];
+    */
   }
-  */
+
 
   onOrigemSelecionada() {
     this.pontosDestinoFiltrados = this.pontosOrigemFiltrados
