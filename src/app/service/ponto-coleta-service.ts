@@ -12,8 +12,20 @@ export class PontoColetaService {
 
   constructor(private http: HttpClient) {}
 
+  buscar(id: number): Observable<PontoColeta> {
+    return this.http.get<PontoColeta>(`${this.apiUrl}/buscar/${id}`);
+  }
+
   listar(): Observable<PontoColeta[]> {
     return this.http.get<PontoColeta[]>(`${this.apiUrl}/listar`);
+  }
+
+  adicionar(pontoColeta: PontoColeta): Observable<PontoColeta> {
+    return this.http.post<PontoColeta>(`${this.apiUrl}/adicionar`, pontoColeta);
+  }
+
+  atualizar(id: number, pontoColeta: PontoColeta): Observable<PontoColeta> {
+    return this.http.put<PontoColeta>(`${this.apiUrl}/atualizar/${id}`, pontoColeta);
   }
 
   deletar(id: number) {

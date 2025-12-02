@@ -16,8 +16,8 @@ export class BairroService {
     return this.http.get<Bairro[]>(`${this.apiUrl}/listar`);
   }
 
-  buscar(id: number) {
-    return this.http.get(`${this.apiUrl}/buscar/${id}`);
+  buscar(id: number): Observable<Bairro> {
+    return this.http.get<Bairro>(`${this.apiUrl}/buscar/${id}`);
   }
 
   deletar(id: number) {

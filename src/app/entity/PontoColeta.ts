@@ -1,6 +1,3 @@
-import {Bairro} from './Bairro';
-import {Residuo} from './Residuo';
-
 export interface PontoColeta {
   id?: number;
   nome: string;
@@ -10,5 +7,5 @@ export interface PontoColeta {
   endereco: string;
   horario: string;
   bairroId: number;
-  tiposResiduos: Residuo[];
+  tiposResiduos: number[];
 }

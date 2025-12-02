@@ -1,7 +1,14 @@
 <p-treetable [value]="files" [columns]="cols" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
 
   <ng-template #caption>
-    <div class="text-xl font-bold">Rotas Cadastradas</div>
+    <div class="caption-container">
+      <span class="text-xl font-bold">Ponto de Coleta Cadastradas</span>
+
+      <p-button
+        icon="pi pi-plus"
+        (onClick)="adicionar()">
+      </p-button>
+    </div>
   </ng-template>
 
   <ng-template #header let-columns>
@@ -27,7 +34,7 @@
           rounded="true"
           severity="success"
           [style]="{ 'margin-right': '.5em' }"
-          (onClick)="atualizarRota(rowNode.node.data.id)">
+          (onClick)="atualizarPontoColeta(rowNode.node.data.id)">
         </p-button>
 
         <p-button

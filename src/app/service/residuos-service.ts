@@ -16,8 +16,8 @@ export class ResiduosService {
     return this.http.get<Residuo[]>(`${this.apiUrl}/listar`);
   }
 
-  buscar(id: number) {
-    return this.http.get(`${this.apiUrl}/buscar/${id}`);
+  buscar(id: number): Observable<Residuo> {
+    return this.http.get<Residuo>(`${this.apiUrl}/buscar/${id}`);
   }
 
   deletar(id: number) {

@@ -1,0 +1,78 @@
+<p-toast></p-toast>
+
+<div class="form-container">
+  <p-card [header]="formAtualizar ? 'Atualizar' : 'Cadastrar'">
+
+    <!-- NOME -->
+    <span class="p-float-label">
+      <label>Nome</label>
+      <input pInputText [(ngModel)]="pontoColeta.nome" />
+    </span>
+
+    <!-- RESPONSÁVEL -->
+    <span class="p-float-label">
+      <label>Responsável</label>
+      <input pInputText [(ngModel)]="pontoColeta.responsavel" />
+    </span>
+
+    <!-- TELEFONE -->
+    <span class="p-float-label">
+      <label>Telefone</label>
+      <input pInputText [(ngModel)]="pontoColeta.telefoneResponsavel" />
+    </span>
+
+    <!-- EMAIL -->
+    <span class="p-float-label">
+      <label>Email</label>
+      <input pInputText [(ngModel)]="pontoColeta.emailResponsavel" />
+    </span>
+
+    <!-- ENDEREÇO -->
+    <span class="p-float-label">
+      <label>Endereço</label>
+      <input pInputText [(ngModel)]="pontoColeta.endereco" />
+    </span>
+
+    <!-- HORÁRIO -->
+    <span class="p-float-label">
+      <label>Horário</label>
+      <input pInputText [(ngModel)]="pontoColeta.horario" />
+    </span>
+
+    <!-- BAIRRO -->
+    <span class="p-float-label">
+      <label>Bairro</label>
+      <p-select
+        [options]="bairroDisponivel"
+        [(ngModel)]="bairroSelecionado"
+        optionLabel="nome"
+        filterBy="nome"
+        [filter]="true"
+        class="w-full">
+      </p-select>
+    </span>
+
+    <!-- RESÍDUOS -->
+    <span class="p-float-label">
+      <label>Resíduos</label>
+      <p-multi-select
+        [options]="residuoDisponivel"
+        [(ngModel)]="residuoSelecionado"
+        optionLabel="tipo"
+        filterBy="tipo"
+        [filter]="true"
+        class="w-full">
+      </p-multi-select>
+    </span>
+
+    <div class="button-group">
+      <p-button
+        [label]="formAtualizar ? 'Atualizar' : 'Cadastrar'"
+        (click)="formAtualizar ? atualizar() : cadastrar()">
+      </p-button>
+
+      <p-button label="Voltar" (click)="voltar()"></p-button>
+    </div>
+
+  </p-card>
+</div>
