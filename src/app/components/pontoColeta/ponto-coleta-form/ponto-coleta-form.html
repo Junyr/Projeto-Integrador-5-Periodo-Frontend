@@ -1,0 +1,93 @@
+<p-toast></p-toast>
+
+<div class="form-container">
+  <p-card class="card-form">
+
+    <ng-template pTemplate="header">
+      <div class="caption-container">
+
+        <span class="title-card">
+          {{ formAtualizar ? 'Atualizar' : 'Cadastrar' }}
+        </span>
+
+        <p-button
+          icon="pi pi-angle-left"
+          severity="success"
+          (onClick)="voltar()"
+          styleClass="btn-voltar">
+        </p-button>
+      </div>
+    </ng-template>
+
+    <span class="p-float-label field">
+      <label>Nome</label>
+      <input pInputText [(ngModel)]="pontoColeta.nome" />
+    </span>
+
+    <span class="p-float-label field">
+      <label>Responsável</label>
+      <input pInputText [(ngModel)]="pontoColeta.responsavel" />
+    </span>
+
+    <span class="p-float-label field">
+      <label>Telefone</label>
+      <input pInputText [(ngModel)]="pontoColeta.telefoneResponsavel" />
+    </span>
+
+    <span class="p-float-label field">
+      <label>Email</label>
+      <input pInputText [(ngModel)]="pontoColeta.emailResponsavel" />
+    </span>
+
+    <span class="p-float-label field">
+      <label>Endereço</label>
+      <input pInputText [(ngModel)]="pontoColeta.endereco" />
+    </span>
+
+    <span class="p-float-label field">
+      <label>Horário</label>
+      <input pInputText [(ngModel)]="pontoColeta.horario" />
+    </span>
+
+    <span class="p-float-label field">
+      <label>Bairro</label>
+      <p-select
+        [options]="bairroDisponivel"
+        [(ngModel)]="bairroSelecionado"
+        optionLabel="nome"
+        filterBy="nome"
+        [filter]="true"
+        class="w-full">
+      </p-select>
+    </span>
+
+    <span class="p-float-label field">
+      <label>Resíduos</label>
+      <p-multi-select
+        [options]="residuoDisponivel"
+        [(ngModel)]="residuoSelecionado"
+        optionLabel="tipo"
+        filterBy="tipo"
+        [filter]="true"
+        class="w-full">
+      </p-multi-select>
+    </span>
+
+    <div class="button-group">
+
+      <p-button
+        [label]="formAtualizar ? 'Atualizar' : 'Cadastrar'"
+        (click)="formAtualizar ? atualizar() : cadastrar()"
+        styleClass="btn-principal">
+      </p-button>
+
+      <p-button
+        label="Voltar"
+        (click)="voltar()"
+        styleClass="btn-secundario">
+      </p-button>
+
+    </div>
+
+  </p-card>
+</div>

@@ -1,17 +1,64 @@
 .form-container {
-  display: grid;
-  place-items: center;
-  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
-.p-float-label {
+/* Card */
+.card-form {
+  width: 100%;
+  max-width: 520px;
+  padding: 1.5rem;
+}
+
+/* HEADER */
+.caption-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-card {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.btn-voltar {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+}
+
+/* CAMPOS */
+.field {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  width: 100%;
+  margin-bottom: 1.4rem;
 }
 
+/* BOTÕES */
 .button-group {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  align-items: center;
+  width: 100%;
+  margin-top: 1.4rem;
+  gap: 1rem;
+}
+
+.btn-principal {
+  min-width: 160px;
+}
+
+.btn-secundario {
+  min-width: 140px;
+}
+
+.field label {
+  margin-bottom: 0.4rem;
+  display: block;
 }

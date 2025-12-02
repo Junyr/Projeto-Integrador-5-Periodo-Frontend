@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Bairro} from '../entity/Bairro';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BairroService {
+
+  private apiUrl = 'http://localhost:8080/bairros';
+
+  constructor(private http: HttpClient) {}
+
+  listar(): Observable<Bairro[]> {
+    return this.http.get<Bairro[]>(`${this.apiUrl}/listar`);
+  }
+
+  buscar(id: number): Observable<Bairro> {
+    return this.http.get<Bairro>(`${this.apiUrl}/buscar/${id}`);
+  }
+
+  deletar(id: number) {
+    return this.http.delete(`${this.apiUrl}/deletar/${id}`);
+  }
+
+}

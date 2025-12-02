@@ -1,0 +1,87 @@
+<p-toast></p-toast>
+
+<div class="form-container">
+  <p-card styleClass="card-form">
+
+    <ng-template pTemplate="header">
+      <div class="caption-container">
+
+        <span class="title-card">
+          {{ formAtualizar ? 'Atualizar' : 'Cadastrar' }}
+        </span>
+
+        <p-button
+          icon="pi pi-angle-left"
+          severity="success"
+          (onClick)="voltar()"
+          styleClass="btn-voltar">
+        </p-button>
+      </div>
+    </ng-template>
+
+    <span class="p-float-label field">
+      <label>Caminhão</label>
+      <p-select
+        [options]="caminhaoDisponivel"
+        [(ngModel)]="caminhaoSelecionado"
+        optionLabel="placa"
+        [filter]="true"
+        placeholder="Selecione um caminhão"
+        class="w-full"
+        (onChange)="onSelecionarCaminhao()">
+      </p-select>
+    </span>
+
+    <span class="p-float-label field">
+      <label>Ponto de Origem</label>
+      <p-select
+        [options]="pontosOrigemFiltrados"
+        [(ngModel)]="pontoColetaOrigem"
+        optionLabel="nome"
+        class="w-full"
+        [disabled]="!caminhaoSelecionado"
+        (onChange)="onOrigemSelecionada()">
+      </p-select>
+    </span>
+
+    <span class="p-float-label field">
+      <label>Ponto de Destino</label>
+      <p-select
+        [options]="pontosDestinoFiltrados"
+        [(ngModel)]="pontoColetaDestino"
+        optionLabel="nome"
+        class="w-full"
+        [disabled]="!pontoColetaOrigem"
+        (onChange)="onDestinoSelecionado()">
+      </p-select>
+    </span>
+
+    <span class="p-float-label field">
+      <label>Resíduos</label>
+      <p-multiSelect
+        [options]="residuosFiltrados"
+        optionLabel="tipo"
+        [(ngModel)]="residuosSelecionados"
+        class="w-full"
+        [disabled]="!pontoColetaDestino">
+      </p-multiSelect>
+    </span>
+
+    <div class="button-group">
+
+      <p-button
+        [label]="formAtualizar ? 'Atualizar' : 'Cadastrar'"
+        (click)="formAtualizar ? atualizar() : cadastrar()"
+        styleClass="btn-principal">
+      </p-button>
+
+      <p-button
+        label="Voltar"
+        (click)="voltar()"
+        styleClass="btn-secundario">
+      </p-button>
+
+    </div>
+
+  </p-card>
+</div>
