@@ -1,0 +1,52 @@
+<p-button label="Ponto de Colta" (onClick)="pontoColeta()"></p-button>
+
+<p-treetable [value]="files" [columns]="cols" [scrollable]="true" [tableStyle]="{ 'min-width': '50rem' }">
+
+  <ng-template #caption>
+    <div class="text-xl font-bold">Rotas Cadastradas</div>
+  </ng-template>
+  S
+  <ng-template #header let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{ col.header }}
+      </th>
+      <th>Ações</th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
+    <tr [ttRow]="rowNode">
+      <td *ngFor="let col of columns; let i = index">
+        <p-treetable-toggler [rowNode]="rowNode" *ngIf="i === 0" />
+        {{ rowData[col.field] }}
+      </td>
+
+      <td>
+        <p-button
+          *ngIf="rowNode.level === 0"
+          icon="pi pi-pencil"
+          rounded="true"
+          severity="success"
+          [style]="{ 'margin-right': '.5em' }"
+          (onClick)="atualizarRota(rowNode.node.data.id)">
+        </p-button>
+
+        <p-button
+          *ngIf="rowNode.level === 0"
+          icon="pi pi-trash"
+          rounded="true"
+          severity="danger"
+          (click)="deletar(rowNode.node.data.id)">
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template #summary>
+    <div style="text-align:left">
+      <p-button icon="pi pi-refresh" label="Atualizar" severity="warn" (click)="carregarTree()" />
+    </div>
+  </ng-template>
+
+</p-treetable>

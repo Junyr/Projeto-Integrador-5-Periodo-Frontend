@@ -15,7 +15,7 @@ import {MultiSelect} from 'primeng/multiselect';
 import {Button} from 'primeng/button';
 
 @Component({
-  selector: 'app-rota-atualizar-formulario.component',
+  selector: 'app-rota-forms',
   imports: [
     Card,
     FormsModule,
@@ -24,11 +24,11 @@ import {Button} from 'primeng/button';
     MultiSelect,
     Button
   ],
-  templateUrl: './rota-atualizar-formulario.component.html',
+  templateUrl: './rota-forms.html',
   styleUrl: '../../../template/templateForm.scss',
 })
 
-export class RotaAtualizarFormularioComponent implements OnInit {
+export class RotaForms implements OnInit {
 
   rota: Rota = {
     bairros: [],
@@ -82,7 +82,7 @@ export class RotaAtualizarFormularioComponent implements OnInit {
     const tipos = this.caminhaoSelecionado.tiposResiduos;
 
     this.pontosOrigemFiltrados = Array.from(this.pontoColetaMap.values())
-      .filter(p => p.tiposResiduos.some(t => tipos.includes(t.id!)));
+      .filter(p => p.tiposResiduos.some(t => tipos.includes(t)));
 
     this.pontoColetaOrigem = undefined!;
     this.pontoColetaDestino = undefined!;
@@ -102,7 +102,7 @@ export class RotaAtualizarFormularioComponent implements OnInit {
     const permitidos = this.pontoColetaDestino.tiposResiduos;
 
     this.residuosFiltrados = this.residuosMapArray
-      .filter(r => permitidos.includes(r));
+      .filter(r => permitidos.includes(r.id!));
   }
 
   atualizar() {

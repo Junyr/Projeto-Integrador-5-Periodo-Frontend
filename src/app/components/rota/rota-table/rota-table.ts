@@ -20,7 +20,7 @@ import {PontoColeta} from '../../../entity/PontoColeta';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-rota-table',
   imports: [
     CommonModule,
     NgForOf,
@@ -29,12 +29,12 @@ import {Router} from '@angular/router';
     ButtonModule,
     DialogModule,
     PickListModule,
-    FormsModule
+    FormsModule,
   ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  templateUrl: './rota-table.html',
+  styleUrl: './rota-table.scss',
 })
-export class HomeComponent implements OnInit {
+export class RotaTable implements OnInit {
 
   files: TreeNode[] = [];
   cols: any[] = [];
@@ -178,5 +178,9 @@ export class HomeComponent implements OnInit {
 
   protected atualizarRota(id: number) {
     this.router.navigate(['/rota/atualizar', id]);
+  }
+
+  protected pontoColeta() {
+    this.router.navigate(['pontoColeta']);
   }
 }
