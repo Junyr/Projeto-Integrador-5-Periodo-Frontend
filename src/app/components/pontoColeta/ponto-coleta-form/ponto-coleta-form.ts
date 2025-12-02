@@ -5,7 +5,7 @@ import {FormsModule} from "@angular/forms";
 import {InputText} from "primeng/inputtext";
 import {Toast} from "primeng/toast";
 import {ActivatedRoute, Router} from '@angular/router';
-import {MessageService} from 'primeng/api';
+import {MessageService, PrimeTemplate} from 'primeng/api';
 import {PontoColeta} from '../../../entity/PontoColeta';
 import {PontoColetaService} from '../../../service/ponto-coleta-service';
 import {Select} from 'primeng/select';
@@ -24,7 +24,8 @@ import {ResiduosService} from '../../../service/residuos-service';
     InputText,
     Toast,
     Select,
-    MultiSelect
+    MultiSelect,
+    PrimeTemplate
   ],
   templateUrl: './ponto-coleta-form.html',
   styleUrl: '../../../template/templateForm.scss',

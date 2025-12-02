@@ -13,6 +13,10 @@ import {Rota} from '../../../entity/Rota';
 import {Select} from 'primeng/select';
 import {MultiSelect} from 'primeng/multiselect';
 import {Button} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
+import {ResiduosService} from '../../../service/residuos-service';
+import {MessageService, PrimeTemplate} from 'primeng/api';
+import {RotaRequestDTO} from '../../../entity/RotaRequestDTO';
 
 @Component({
   selector: 'app-rota-forms',
@@ -22,7 +26,8 @@ import {Button} from 'primeng/button';
     Toast,
     Select,
     MultiSelect,
-    Button
+    Button,
+    PrimeTemplate,
   ],
   templateUrl: './rota-forms.html',
   styleUrl: '../../../template/templateForm.scss',
@@ -38,6 +43,16 @@ export class RotaForms implements OnInit {
     tiposResiduos: []
   };
 
+  rotaRequest: RotaRequestDTO = {
+    caminhaoId: 0,
+    origemId: 0,
+    destinoId: 0,
+    tipoResiduoId: []
+  }
+
+  formAtualizar: boolean = false;
+  formDadosCarregados: boolean = false;
+
   caminhaoDisponivel: Caminhao[] = [];
   caminhaoSelecionado!: Caminhao;
 
@@ -47,18 +62,20 @@ export class RotaForms implements OnInit {
   pontosOrigemFiltrados: PontoColeta[] = [];
   pontosDestinoFiltrados: PontoColeta[] = [];
 
-  residuosMapArray: Residuo[] = [];
   residuosFiltrados: Residuo[] = [];
   residuosSelecionados: Residuo[] = [];
 
   pontoColetaMap = new Map<number, PontoColeta>();
+  residuoMap = new Map<number, Residuo>();
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private rotaService: RotaService,
     private caminhaoService: CaminhaoService,
-    private pontoColetaService: PontoColetaService
+    private pontoColetaService: PontoColetaService,
+    private residuoService: ResiduosService,
+    private messageService: MessageService,
   ) {}
 
   ngOnInit() {
@@ -66,14 +83,45 @@ export class RotaForms implements OnInit {
 
     this.caminhaoService.listar().subscribe(caminhoes => {
       this.caminhaoDisponivel = caminhoes;
-    });
 
-    this.pontoColetaService.listar().subscribe(pontos => {
-      pontos.forEach(p => this.pontoColetaMap.set(p.id!, p));
-    });
+      this.pontoColetaService.listar().subscribe(pontos => {
+        pontos.forEach(p => this.pontoColetaMap.set(p.id!, p));
 
-    this.rotaService.buscar(id).subscribe(rota => {
-      this.rota = rota;
+        this.residuoService.listar().subscribe(residuos => {
+          residuos.forEach(r => this.residuoMap.set(r.id!, r));
+
+          if (id) {
+            this.formAtualizar = true;
+
+            this.rotaService.buscar(id).subscribe(rota => {
+              this.rota = rota;
+
+              this.caminhaoSelecionado = this.caminhaoDisponivel
+                .find(c => c.id === rota.caminhaoId)!;
+
+              this.onSelecionarCaminhao();
+
+              const origemId = rota.bairros[0];
+              this.pontoColetaOrigem = this.pontosOrigemFiltrados
+                .find(p => p.bairroId === origemId)!;
+
+              this.onOrigemSelecionada();
+
+              const destinoId = rota.bairros[rota.bairros.length - 1];
+              this.pontoColetaDestino = this.pontosDestinoFiltrados
+                .find(p => p.bairroId === destinoId)!;
+
+              this.onDestinoSelecionado();
+
+              this.residuosSelecionados =
+                rota.tiposResiduos.map(id =>
+                  this.residuoMap.get(id)!
+                );
+            });
+          }
+
+        });
+      });
     });
   }
 
@@ -84,9 +132,11 @@ export class RotaForms implements OnInit {
     this.pontosOrigemFiltrados = Array.from(this.pontoColetaMap.values())
       .filter(p => p.tiposResiduos.some(t => tipos.includes(t)));
 
-    this.pontoColetaOrigem = undefined!;
-    this.pontoColetaDestino = undefined!;
-    this.residuosSelecionados = [];
+    if(!this.formDadosCarregados){
+      this.pontoColetaOrigem = undefined!;
+      this.pontoColetaDestino = undefined!;
+      this.residuosSelecionados = [];
+    }
   }
 
 
@@ -94,32 +144,80 @@ export class RotaForms implements OnInit {
     this.pontosDestinoFiltrados = this.pontosOrigemFiltrados
       .filter(p => p.id !== this.pontoColetaOrigem.id);
 
-    this.pontoColetaDestino = undefined!;
-    this.residuosSelecionados = [];
+    if(!this.formDadosCarregados){
+      this.pontoColetaDestino = undefined!;
+      this.residuosSelecionados = [];
+    }
   }
 
   onDestinoSelecionado() {
-    const permitidos = this.pontoColetaDestino.tiposResiduos;
+    const permitidos = this.pontoColetaDestino.tiposResiduos; // array de IDs
 
-    this.residuosFiltrados = this.residuosMapArray
+    this.residuosFiltrados = Array.from(this.residuoMap.values())
       .filter(r => permitidos.includes(r.id!));
+
+    if(!this.formDadosCarregados){
+      this.residuosSelecionados = [];
+    } else this.formDadosCarregados = true;
   }
 
   atualizar() {
-    this.rota.caminhaoId = this.caminhaoSelecionado.id!;
-    this.rota.tiposResiduos = this.residuosSelecionados.map(r => r.id!);
-    this.rota.bairros = [
-      this.pontoColetaOrigem.bairroId,
-      this.pontoColetaDestino.bairroId
-    ];
+    this.rotaRequest.caminhaoId = this.caminhaoSelecionado.id!;
+    this.rotaRequest.origemId = this.pontoColetaOrigem.id!;
+    this.rotaRequest.destinoId = this.pontoColetaDestino.id!;
+    this.rotaRequest.tipoResiduoId = this.residuosSelecionados.map(r => r.id!);
 
-    this.rotaService.atualizar(this.rota.id!, this.rota).subscribe(() => {
-      this.router.navigate(['/home']);
+    this.rotaService.atualizar(this.rota.id!, this.rotaRequest).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Rota atualizada com sucesso!'
+        });
+
+        setTimeout(() => {
+          this.router.navigate(['/rota']);
+        }, 1500);
+      },
+        error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err.error?.message || 'Erro ao atualizar rota'!
+        });
+      }
+    });
+  }
+
+  protected cadastrar() {
+    this.rotaRequest.caminhaoId = this.caminhaoSelecionado.id!;
+    this.rotaRequest.origemId = this.pontoColetaOrigem.id!;
+    this.rotaRequest.destinoId = this.pontoColetaDestino.id!;
+    this.rotaRequest.tipoResiduoId = this.residuosSelecionados.map(r => r.id!);
+
+    this.rotaService.adicionar(this.rotaRequest).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Rota cadastrada com sucesso!'
+        });
+
+        setTimeout(() => {
+          this.router.navigate(['/rota']);
+        }, 1500);
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err.error?.message || 'Erro ao cadastrar rota'!
+        });
+      }
     });
   }
 
   voltar() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/rota']);
   }
-
 }

@@ -1,103 +1,87 @@
 <p-toast></p-toast>
 
 <div class="form-container">
-  <p-card header="Atualizar Rota">
+  <p-card styleClass="card-form">
 
-    <!-- ✅ CAMINHÃO -->
-    <span class="p-float-label">
+    <ng-template pTemplate="header">
+      <div class="caption-container">
+
+        <span class="title-card">
+          {{ formAtualizar ? 'Atualizar' : 'Cadastrar' }}
+        </span>
+
+        <p-button
+          icon="pi pi-angle-left"
+          severity="success"
+          (onClick)="voltar()"
+          styleClass="btn-voltar">
+        </p-button>
+      </div>
+    </ng-template>
+
+    <span class="p-float-label field">
       <label>Caminhão</label>
       <p-select
         [options]="caminhaoDisponivel"
         [(ngModel)]="caminhaoSelecionado"
         optionLabel="placa"
         [filter]="true"
-        filterBy="placa"
         placeholder="Selecione um caminhão"
         class="w-full"
-        (onChange)="onSelecionarCaminhao()"
-      >
-        <ng-template #selectedItem let-item>
-          <div class="flex items-center gap-2">
-            <div>{{ item.motorista }} - {{ item.placa }}</div>
-          </div>
-        </ng-template>
-
-        <ng-template #item let-caminhao>
-          <div class="flex items-center gap-2">
-            <div>{{ caminhao.motorista }} - {{ caminhao.placa }}</div>
-          </div>
-        </ng-template>
+        (onChange)="onSelecionarCaminhao()">
       </p-select>
     </span>
 
-
-    <!-- ✅ ORIGEM -->
-    <span class="p-float-label">
+    <span class="p-float-label field">
+      <label>Ponto de Origem</label>
       <p-select
         [options]="pontosOrigemFiltrados"
         [(ngModel)]="pontoColetaOrigem"
         optionLabel="nome"
-        [filter]="true"
-        filterBy="nome"
-        placeholder="Selecione a origem"
         class="w-full"
         [disabled]="!caminhaoSelecionado"
-        (onChange)="onOrigemSelecionada()"
-      >
-        <ng-template #selectedItem let-item>
-          <div>{{ item?.nome }}</div>
-        </ng-template>
-
-        <ng-template #item let-ponto>
-          <div>{{ ponto.nome }}</div>
-        </ng-template>
+        (onChange)="onOrigemSelecionada()">
       </p-select>
-      <label>Ponto de Origem</label>
     </span>
 
-
-    <!-- ✅ DESTINO -->
-    <span class="p-float-label">
+    <span class="p-float-label field">
+      <label>Ponto de Destino</label>
       <p-select
         [options]="pontosDestinoFiltrados"
         [(ngModel)]="pontoColetaDestino"
         optionLabel="nome"
-        [filter]="true"
-        filterBy="nome"
-        placeholder="Selecione o destino"
         class="w-full"
         [disabled]="!pontoColetaOrigem"
-        (onChange)="onDestinoSelecionado()"
-      >
-        <ng-template #selectedItem let-item>
-          <div>{{ item?.nome }}</div>
-        </ng-template>
-
-        <ng-template #item let-ponto>
-          <div>{{ ponto.nome }}</div>
-        </ng-template>
+        (onChange)="onDestinoSelecionado()">
       </p-select>
-      <label>Ponto de Destino</label>
     </span>
 
-    <span class="p-float-label">
+    <span class="p-float-label field">
+      <label>Resíduos</label>
       <p-multiSelect
         [options]="residuosFiltrados"
         optionLabel="tipo"
         [(ngModel)]="residuosSelecionados"
-        [filter]="true"
-        filterBy="tipo"
         class="w-full"
-        [disabled]="!pontoColetaDestino"
-        placeholder="Selecione os resíduos"
-      >
+        [disabled]="!pontoColetaDestino">
       </p-multiSelect>
-      <label>Resíduos</label>
     </span>
 
     <div class="button-group">
-      <p-button label="Atualizar" (click)="atualizar()"></p-button>
-      <p-button label="Voltar" (click)="voltar()"></p-button>
+
+      <p-button
+        [label]="formAtualizar ? 'Atualizar' : 'Cadastrar'"
+        (click)="formAtualizar ? atualizar() : cadastrar()"
+        styleClass="btn-principal">
+      </p-button>
+
+      <p-button
+        label="Voltar"
+        (click)="voltar()"
+        styleClass="btn-secundario">
+      </p-button>
+
     </div>
+
   </p-card>
 </div>

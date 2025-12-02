@@ -176,8 +176,12 @@ export class RotaTable implements OnInit {
     });
   }
 
+  protected adicionar() {
+    this.router.navigate(['rota/adicionar']);
+  }
+
   protected atualizarRota(id: number) {
-    this.router.navigate(['/rota/atualizar', id]);
+    this.router.navigate([`/rota/atualizar/${id}`]);
   }
 
   protected pontoColeta() {

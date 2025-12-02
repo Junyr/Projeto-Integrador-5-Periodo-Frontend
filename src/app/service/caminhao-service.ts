@@ -16,8 +16,8 @@ export class CaminhaoService {
     return this.http.get<Caminhao[]>(`${this.apiUrl}/listar`);
   }
 
-  buscar(id: number) {
-    return this.http.get(`${this.apiUrl}/buscar/${id}`);
+  buscar(id: number): Observable<Caminhao> {
+    return this.http.get<Caminhao>(`${this.apiUrl}/buscar/${id}`);
   }
 
   deletar(id: number) {
