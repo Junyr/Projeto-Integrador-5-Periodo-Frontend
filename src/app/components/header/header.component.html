@@ -4,3 +4,17 @@
   <p *ngIf="usuario as u"> {{ u.nome }} </p>
   <p-button label="Sair" (onClick)="sair()"></p-button>
 </ng-container>
+
+<ng-container>
+  <p-button
+    label="Rota"
+    (onClick)="router.navigate(['rota'])"
+    [disabled]="isAtRota()">
+  </p-button>
+
+  <p-button
+    label="Ponto de Coleta"
+    (onClick)="router.navigate(['pontoColeta'])"
+    [disabled]="isAtPonto()">
+  </p-button>
+</ng-container>

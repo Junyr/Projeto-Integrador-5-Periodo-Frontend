@@ -3,7 +3,7 @@ import {Button} from 'primeng/button';
 import {NgIf} from '@angular/common';
 import {UsuarioInfo} from '../../entity/UsuarioInfo';
 import {UsuarioService} from '../../service/usuario-service';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import { Toast } from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 
@@ -13,7 +13,7 @@ import {MessageService} from 'primeng/api';
   imports: [
     Button,
     NgIf,
-    Toast
+    Toast,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -25,7 +25,7 @@ export class HeaderComponent {
   constructor(
     private usuarioService: UsuarioService,
     private messageService: MessageService,
-    private router: Router) {
+    protected router: Router) {
     this.usuarioService.usuarioInfo$.subscribe(u => {
       this.usuario = u;
     });
@@ -46,6 +46,14 @@ export class HeaderComponent {
 
   getIsAuthorized(): boolean {
     return this.usuarioService.getIsAuthorized();
+  }
+
+  isAtRota(): boolean {
+    return this.router.url === '/rota';
+  }
+
+  isAtPonto(): boolean {
+    return this.router.url === '/pontoColeta';
   }
 
 }
