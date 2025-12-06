@@ -63,4 +63,8 @@ export class HeaderComponent {
   isAtBairro() {
     return this.router.url === '/bairro';
   }
+
+  isAtRua() {
+    return this.router.url === '/rua';
+  }
 }

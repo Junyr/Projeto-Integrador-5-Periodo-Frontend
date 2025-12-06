@@ -125,7 +125,6 @@ export class RotaForms implements OnInit {
     });
   }
 
-
   onSelecionarCaminhao() {
     const tipos = this.caminhaoSelecionado.tiposResiduos;
 

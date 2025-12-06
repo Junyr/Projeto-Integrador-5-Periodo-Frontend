@@ -20,8 +20,30 @@
     </ng-template>
 
     <span class="p-float-label field">
-      <label>Nome</label>
-      <input pInputText [(ngModel)]="bairro.nome" />
+      <label>Bairro de origem</label>
+      <p-select
+        [options]="bairroDisponivel"
+        [(ngModel)]="bairroOrigemSelecionado"
+        optionLabel="nome"
+        class="w-full"
+        (onChange)="OnSelectionOrigem()">
+      </p-select>
+    </span>
+
+    <span class="p-float-label field">
+      <label>Bairro de destino</label>
+      <p-select
+        [options]="BairroDisponivelFiltrado"
+        [(ngModel)]="bairroDestinoSelecionado"
+        optionLabel="nome"
+        class="w-full"
+        [disabled]="!bairroOrigemSelecionado">
+      </p-select>
+    </span>
+
+    <span class="p-float-label field">
+      <label>distancia (Km)</label>
+      <p-inputNumber [(ngModel)]="rua.distanciaKm" />
     </span>
 
     <div class="button-group">

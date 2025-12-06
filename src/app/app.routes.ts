@@ -10,6 +10,8 @@ import {CaminhaoTable} from './components/caminhao/caminhao-table/caminhao-table
 import {CaminhaoForm} from './components/caminhao/caminhao-form/caminhao-form';
 import {BairroForm} from './components/bairro/bairro-form/bairro-form';
 import {BairroTable} from './components/bairro/bairro-table/bairro-table';
+import {RuaTable} from './components/rua/rua-table/rua-table';
+import {RuaForm} from './components/rua/rua-form/rua-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'rota', pathMatch: 'full' },
@@ -27,5 +29,8 @@ export const routes: Routes = [
   { path: 'caminhao/atualizar/:id', component: CaminhaoForm/**, canActivate: [authGuard]*/ },
   { path: 'bairro', component: BairroTable/**, canActivate: [authGuard]*/ },
   { path: 'bairro/adicionar', component: BairroForm/**, canActivate: [authGuard]*/ },
-  { path: 'bairro/atualizar/:id', component: BairroForm/**, canActivate: [authGuard]*/ }
+  { path: 'bairro/atualizar/:id', component: BairroForm/**, canActivate: [authGuard]*/ },
+  { path: 'rua', component: RuaTable/**, canActivate: [authGuard]*/ },
+  { path: 'rua/adicionar', component: RuaForm/**, canActivate: [authGuard]*/ },
+  { path: 'rua/atualizar/:id', component: RuaForm/**, canActivate: [authGuard]*/ }
 ];

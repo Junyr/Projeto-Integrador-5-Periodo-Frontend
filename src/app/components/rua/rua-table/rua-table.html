@@ -1,9 +1,9 @@
 <p-toast></p-toast>
 
-<p-table [value]="bairro" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [value]="rua" [tableStyle]="{ 'min-width': '50rem' }">
   <ng-template pTemplate="caption">
     <div class="caption-container">
-      <span class="text-xl font-bold">Bairros Cadastrados</span>
+      <span class="text-xl font-bold">Ruas Cadastradas</span>
 
       <p-button
         icon="pi pi-plus"
@@ -12,29 +12,33 @@
     </div>
   </ng-template>
 
-  <ng-template #header>
+  <ng-template pTemplate="header">
     <tr>
-      <th>Nome</th>
+      <th>Origem → Destino</th>
+      <th>Distância (km)</th>
       <th>Ações</th>
-
     </tr>
   </ng-template>
-  <ng-template #body let-bairro>
+
+  <ng-template pTemplate="body" let-rua>
     <tr>
-      <td>{{ bairro.nome }}</td>
+      <td>
+        {{ rua.origem?.nome ?? '—' }} &rarr; {{ rua.destino?.nome ?? '—' }}
+      </td>
+      <td>{{ rua.distanciaKm }}</td>
       <td>
         <p-button
           icon="pi pi-pencil"
           rounded="true"
           severity="success"
-          (click)="atualizar(bairro.id)">
+          (click)="atualizar(rua.id)">
         </p-button>
 
         <p-button
           icon="pi pi-trash"
           rounded="true"
           severity="danger"
-          (click)="deletar(bairro.id)">
+          (click)="deletar(rua.id)">
         </p-button>
       </td>
     </tr>
