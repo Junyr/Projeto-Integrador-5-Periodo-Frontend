@@ -19,7 +19,7 @@ import {Router} from '@angular/router';
     TreeTableModule
   ],
   templateUrl: './ponto-coleta-table.html',
-  styleUrl: './ponto-coleta-table.scss',
+  styleUrl: '../../../template/templateTable.scss',
 })
 export class PontoColetaTable implements OnInit {
 

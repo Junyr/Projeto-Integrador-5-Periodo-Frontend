@@ -6,6 +6,8 @@ import {PontoColetaTable} from './components/pontoColeta/ponto-coleta-table/pont
 import {PontoColetaForm} from './components/pontoColeta/ponto-coleta-form/ponto-coleta-form';
 import {RotaTable} from './components/rota/rota-table/rota-table';
 import {RotaForms} from './components/rota/rota-forms/rota-forms';
+import {CaminhaoTable} from './components/caminhao/caminhao-table/caminhao-table';
+import {CaminhaoForm} from './components/caminhao/caminhao-form/caminhao-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'rota', pathMatch: 'full' },
@@ -17,5 +19,8 @@ export const routes: Routes = [
   { path: 'rota/atualizar/:id', component: RotaForms/**, canActivate: [authGuard]*/ },
   { path: 'pontoColeta', component: PontoColetaTable/**, canActivate: [authGuard]*/ },
   { path: 'pontoColeta/adicionar', component: PontoColetaForm/**, canActivate: [authGuard]*/ },
-  { path: 'pontoColeta/atualizar/:id', component: PontoColetaForm/**, canActivate: [authGuard]*/ }
+  { path: 'pontoColeta/atualizar/:id', component: PontoColetaForm/**, canActivate: [authGuard]*/ },
+  { path: 'caminhao', component: CaminhaoTable/**, canActivate: [authGuard]*/ },
+  { path: 'caminhao/adicionar', component: CaminhaoForm/**, canActivate: [authGuard]*/ },
+  { path: 'caminhao/atualizar/:id', component: CaminhaoForm/**, canActivate: [authGuard]*/ },
 ];

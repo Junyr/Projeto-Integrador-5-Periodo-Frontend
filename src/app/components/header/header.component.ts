@@ -56,4 +56,7 @@ export class HeaderComponent {
     return this.router.url === '/pontoColeta';
   }
 
+  isAtCaminhao(): boolean {
+    return this.router.url === '/caminhao';
+  }
 }

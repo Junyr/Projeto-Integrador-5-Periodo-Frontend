@@ -32,7 +32,7 @@ import {Router} from '@angular/router';
     FormsModule,
   ],
   templateUrl: './rota-table.html',
-  styleUrl: './rota-table.scss',
+  styleUrl: '../../../template/templateTable.scss',
 })
 export class RotaTable implements OnInit {
 
