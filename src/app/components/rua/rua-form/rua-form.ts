@@ -51,12 +51,8 @@ export class RuaForm implements OnInit {
   bairroDisponivel: Bairro[] = [];
   BairroDisponivelFiltrado: Bairro[] = [];
 
-  bairroOrigemSelecionado: Bairro = {
-    nome: ''
-  };
-  bairroDestinoSelecionado: Bairro = {
-    nome: ''
-  };
+  bairroOrigemSelecionado!: Bairro;
+  bairroDestinoSelecionado!: Bairro;
 
   constructor(
     private ruaService: RuasService,
