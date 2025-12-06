@@ -20,6 +20,14 @@ export class BairroService {
     return this.http.get<Bairro>(`${this.apiUrl}/buscar/${id}`);
   }
 
+  adicionar(bairro: Bairro): Observable<Bairro> {
+    return this.http.post<Bairro>(`${this.apiUrl}/adicionar`, bairro);
+  }
+
+  atualizar(id: number, bairro: Bairro): Observable<Bairro> {
+    return this.http.put<Bairro>(`${this.apiUrl}/atualizar/${id}`, bairro);
+  }
+
   deletar(id: number) {
     return this.http.delete(`${this.apiUrl}/deletar/${id}`);
   }

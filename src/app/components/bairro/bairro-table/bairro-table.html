@@ -1,0 +1,52 @@
+<p-toast></p-toast>
+
+<p-table [value]="bairro" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="caption">
+    <div class="caption-container">
+      <span class="text-xl font-bold">Bairros Cadastrados</span>
+
+      <p-button
+        icon="pi pi-plus"
+        (onClick)="adicionar()">
+      </p-button>
+    </div>
+  </ng-template>
+
+  <ng-template #header>
+    <tr>
+      <th>Nome</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-bairro>
+    <tr>
+      <td>{{ bairro.nome }}</td>
+      <td>
+        <p-button
+          icon="pi pi-pencil"
+          rounded="true"
+          severity="success"
+          (click)="atualizar(bairro.id)">
+        </p-button>
+
+        <p-button
+          icon="pi pi-trash"
+          rounded="true"
+          severity="danger"
+          (click)="deletar(bairro.id)">
+        </p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <!-- SUMMARY -->
+  <ng-template pTemplate="summary">
+    <div style="text-align:left">
+      <p-button
+        icon="pi pi-refresh"
+        label="Atualizar"
+        severity="warn"
+        (click)="carregarTree()">
+      </p-button>
+    </div>
+  </ng-template>
+</p-table>

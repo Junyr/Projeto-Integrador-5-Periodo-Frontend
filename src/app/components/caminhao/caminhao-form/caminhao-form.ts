@@ -5,7 +5,6 @@ import {InputText} from 'primeng/inputtext';
 import {MultiSelect} from 'primeng/multiselect';
 import {MessageService, PrimeTemplate} from 'primeng/api';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {Select} from 'primeng/select';
 import {Toast} from 'primeng/toast';
 import {Residuo} from '../../../entity/Residuo';
 import {ResiduosService} from '../../../service/residuos-service';
