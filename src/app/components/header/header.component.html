@@ -25,6 +25,12 @@
   </p-button>
 
   <p-button
+    label="Residuo"
+    (onClick)="router.navigate(['residuo'])"
+    [disabled]="isAtResiduo()">
+  </p-button>
+
+  <p-button
     label="Bairro"
     (onClick)="router.navigate(['bairro'])"
     [disabled]="isAtBairro()">

@@ -60,6 +60,10 @@ export class HeaderComponent {
     return this.router.url === '/caminhao';
   }
 
+  protected isAtResiduo() {
+    return this.router.url === '/residuo';
+  }
+
   isAtBairro() {
     return this.router.url === '/bairro';
   }
@@ -67,4 +71,5 @@ export class HeaderComponent {
   isAtRua() {
     return this.router.url === '/rua';
   }
+
 }

@@ -1,0 +1,44 @@
+<p-toast></p-toast>
+
+<div class="form-container">
+  <p-card class="card-form">
+
+    <ng-template pTemplate="header">
+      <div class="caption-container">
+
+        <span class="title-card">
+          {{ formAtualizar ? 'Atualizar' : 'Cadastrar' }}
+        </span>
+
+        <p-button
+          icon="pi pi-angle-left"
+          severity="success"
+          (onClick)="voltar()"
+          styleClass="btn-voltar">
+        </p-button>
+      </div>
+    </ng-template>
+
+    <span class="p-float-label field">
+      <label>Tipo</label>
+      <input pInputText [(ngModel)]="residuo.tipo" />
+    </span>
+
+    <div class="button-group">
+
+      <p-button
+        [label]="formAtualizar ? 'Atualizar' : 'Cadastrar'"
+        (click)="formAtualizar ? atualizar() : cadastrar()"
+        styleClass="btn-principal">
+      </p-button>
+
+      <p-button
+        label="Voltar"
+        (click)="voltar()"
+        styleClass="btn-secundario">
+      </p-button>
+
+    </div>
+
+  </p-card>
+</div>

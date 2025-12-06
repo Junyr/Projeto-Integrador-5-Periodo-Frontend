@@ -12,6 +12,8 @@ import {BairroForm} from './components/bairro/bairro-form/bairro-form';
 import {BairroTable} from './components/bairro/bairro-table/bairro-table';
 import {RuaTable} from './components/rua/rua-table/rua-table';
 import {RuaForm} from './components/rua/rua-form/rua-form';
+import {ResiduoTable} from './components/residuo/residuo-table/residuo-table';
+import {ResiduoForm} from './components/residuo/residuo-form/residuo-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'rota', pathMatch: 'full' },
@@ -27,6 +29,9 @@ export const routes: Routes = [
   { path: 'caminhao', component: CaminhaoTable/**, canActivate: [authGuard]*/ },
   { path: 'caminhao/adicionar', component: CaminhaoForm/**, canActivate: [authGuard]*/ },
   { path: 'caminhao/atualizar/:id', component: CaminhaoForm/**, canActivate: [authGuard]*/ },
+  { path: 'residuo', component: ResiduoTable/**, canActivate: [authGuard]*/ },
+  { path: 'residuo/adicionar', component: ResiduoForm/**, canActivate: [authGuard]*/ },
+  { path: 'residuo/atualizar/:id', component: ResiduoForm/**, canActivate: [authGuard]*/ },
   { path: 'bairro', component: BairroTable/**, canActivate: [authGuard]*/ },
   { path: 'bairro/adicionar', component: BairroForm/**, canActivate: [authGuard]*/ },
   { path: 'bairro/atualizar/:id', component: BairroForm/**, canActivate: [authGuard]*/ },

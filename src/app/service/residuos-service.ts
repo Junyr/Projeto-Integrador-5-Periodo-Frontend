@@ -20,6 +20,14 @@ export class ResiduosService {
     return this.http.get<Residuo>(`${this.apiUrl}/buscar/${id}`);
   }
 
+  adicionar(residuo: Residuo): Observable<Residuo> {
+    return this.http.post<Residuo>(`${this.apiUrl}/adicionar`, residuo);
+  }
+
+  atualizar(id: number, residuo: Residuo): Observable<Residuo> {
+    return this.http.put<Residuo>(`${this.apiUrl}/atualizar/${id}`, residuo);
+  }
+
   deletar(id: number) {
     return this.http.delete(`${this.apiUrl}/deletar/${id}`);
   }
