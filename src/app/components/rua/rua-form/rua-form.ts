@@ -145,6 +145,7 @@ export class RuaForm implements OnInit, FormComponent {
   }
 
   protected OnSelectionOrigem() {
+    this.BairroDisponivelFiltrado = [];
     this.BairroDisponivelFiltrado = this.bairroDisponivel
       .filter(b => b.id !== this.bairroOrigemSelecionado.id);
   }
