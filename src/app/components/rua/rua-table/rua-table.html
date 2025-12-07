@@ -1,46 +1,40 @@
 <p-toast></p-toast>
 
-<p-table [value]="rua" [tableStyle]="{ 'min-width': '50rem' }">
-  <ng-template pTemplate="caption">
-    <div class="caption-container">
-      <span class="text-xl font-bold">Ruas Cadastradas</span>
+<div class="caption-container">
+  <span class="text-xl font-bold">Ruas</span>
+</div>
 
-      <p-button
-        icon="pi pi-plus"
-        (onClick)="adicionar()">
-      </p-button>
-    </div>
+<p-menubar [model]="menuItems">
+
+  <ng-template #item let-item>
+    <a pRipple class="flex items-center p-menubar-item-link" [class.p-disabled]="item.disabled">
+      <span>{{ item.label }}</span>
+    </a>
   </ng-template>
+
+</p-menubar>
+
+<p-table
+  [value]="rua"
+  selectionMode="single"
+  [(selection)]="selectedNode"
+  (selectionChange)="onSelectionChange()"
+  [scrollable]="true"
+  [tableStyle]="{ 'min-width': '50rem' }">
 
   <ng-template pTemplate="header">
     <tr>
       <th>Origem → Destino</th>
       <th>Distância (km)</th>
-      <th>Ações</th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="body" let-rua>
-    <tr>
+    <tr [pSelectableRow]="rua">
       <td>
         {{ rua.origem?.nome ?? '—' }} &rarr; {{ rua.destino?.nome ?? '—' }}
       </td>
       <td>{{ rua.distanciaKm }}</td>
-      <td>
-        <p-button
-          icon="pi pi-pencil"
-          rounded="true"
-          severity="success"
-          (click)="atualizar(rua.id)">
-        </p-button>
-
-        <p-button
-          icon="pi pi-trash"
-          rounded="true"
-          severity="danger"
-          (click)="deletar(rua.id)">
-        </p-button>
-      </td>
     </tr>
   </ng-template>
 

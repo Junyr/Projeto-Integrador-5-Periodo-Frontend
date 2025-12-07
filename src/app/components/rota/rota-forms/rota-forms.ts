@@ -17,6 +17,7 @@ import {InputText} from 'primeng/inputtext';
 import {ResiduosService} from '../../../service/residuos-service';
 import {MessageService, PrimeTemplate} from 'primeng/api';
 import {RotaRequestDTO} from '../../../entity/RotaRequestDTO';
+import {FormComponent} from '../../../entity/FormComponent';
 
 @Component({
   selector: 'app-rota-forms',
@@ -33,7 +34,7 @@ import {RotaRequestDTO} from '../../../entity/RotaRequestDTO';
   styleUrl: '../../../template/templateForm.scss',
 })
 
-export class RotaForms implements OnInit {
+export class RotaForms implements OnInit, FormComponent {
 
   rota: Rota = {
     bairros: [],
@@ -52,6 +53,7 @@ export class RotaForms implements OnInit {
 
   formAtualizar: boolean = false;
   formDadosCarregados: boolean = false;
+  isSalvo: boolean = false;
 
   caminhaoDisponivel: Caminhao[] = [];
   caminhaoSelecionado!: Caminhao;
@@ -168,6 +170,7 @@ export class RotaForms implements OnInit {
 
     this.rotaService.atualizar(this.rota.id!, this.rotaRequest).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -176,13 +179,13 @@ export class RotaForms implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['/rota']);
-        }, 1500);
+        }, 0);
       },
         error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao atualizar rota'!
+          detail: err.error?.message || 'Erro ao atualizar rota!'!
         });
       }
     });
@@ -196,6 +199,7 @@ export class RotaForms implements OnInit {
 
     this.rotaService.adicionar(this.rotaRequest).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -204,13 +208,13 @@ export class RotaForms implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['/rota']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar rota'!
+          detail: err.error?.message || 'Erro ao cadastrar rota!'!
         });
       }
     });

@@ -1,0 +1,38 @@
+/* ===========================
+   Linha com nome + sair
+=========================== */
+.header-session {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+
+  p {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  p-button {
+    button {
+      padding: 6px 14px;
+    }
+  }
+}
+
+/* ===========================
+   Linha dos botões de navegação
+=========================== */
+.menu-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 12px;
+  border-top: 1px solid #ccc;
+  padding-top: 12px;
+
+  p-button button {
+    min-width: 130px;
+  }
+}

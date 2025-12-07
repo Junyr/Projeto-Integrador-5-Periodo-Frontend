@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
 import {NgForOf, NgIf} from '@angular/common';
 import {TreeTableModule} from 'primeng/treetable';
-import {TreeNode} from 'primeng/api';
+import {MenuItem, MessageService, TreeNode} from 'primeng/api';
 import {Router} from '@angular/router';
 import {ResiduosService} from '../../../service/residuos-service';
 import {CaminhaoService} from '../../../service/caminhao-service';
 import {Residuo} from '../../../entity/Residuo';
+import {Toast} from 'primeng/toast';
+import {Menubar} from 'primeng/menubar';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
   selector: 'app-caminhao-table',
@@ -14,22 +17,29 @@ import {Residuo} from '../../../entity/Residuo';
     Button,
     NgForOf,
     NgIf,
-    TreeTableModule
+    TreeTableModule,
+    Toast,
+    Menubar,
+    Ripple
   ],
   templateUrl: './caminhao-table.html',
   styleUrl: '../../../template/templateTable.scss',
 })
-export class CaminhaoTable {
+export class CaminhaoTable implements OnInit {
 
-  files: TreeNode[] = [];
-  cols: any[] = [];
+  protected files: TreeNode[] = [];
+  protected cols: any[] = [];
 
-  residuoMap = new Map<number, Residuo>();
+  protected menuItems: MenuItem[] = [];
+  protected selectedNode!: TreeNode;
+
+  protected residuoMap = new Map<number, Residuo>();
 
   constructor(
     private residuoService: ResiduosService,
     private caminhaoService: CaminhaoService,
-    private router: Router) {}
+    private router: Router,
+    private messageService: MessageService) {}
 
   ngOnInit() {
     this.cols = [
@@ -37,10 +47,56 @@ export class CaminhaoTable {
       { field: 'valor', header: 'Valor' }
     ];
 
+    this.menuItems = [
+      {
+        label: 'Novo',
+        command: () => this.adicionar()
+      },
+      {
+        label: 'Editar',
+        command: () => this.atualizar(this.selectedNode.data.id),
+        disabled: true
+      },
+      {
+        label: 'Excluir',
+        command: () => this.deletar(this.selectedNode.data.id),
+        disabled: true
+      }
+    ];
+
     this.carregarTree();
   }
 
-  carregarTree() {
+  protected adicionar() {
+    this.router.navigate(['caminhao/adicionar']);
+  }
+
+  protected atualizar(id: number) {
+    this.router.navigate([`caminhao/atualizar/${id}`]);
+  }
+
+  protected deletar(id: number) {
+    this.caminhaoService.deletar(id).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Caminhão deletado com sucesso!'
+        });
+
+        this.carregarTree();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err.error?.message || 'Erro ao deletar caminhão!'
+        });
+      }
+    });
+  }
+
+  protected carregarTree() {
     this.residuoService.listar().subscribe(residuo => {
       residuo.forEach(re => {this.residuoMap.set(re.id!, re)});
 
@@ -77,17 +133,13 @@ export class CaminhaoTable {
     })
   }
 
-  deletar(id: number) {
-    this.caminhaoService.deletar(id).subscribe(() => {
-      this.carregarTree();
-    });
-  }
-
-  protected adicionar() {
-    this.router.navigate(['caminhao/adicionar']);
-  }
-
-  protected atualizar(id: number) {
-    this.router.navigate([`caminhao/atualizar/${id}`]);
+  onSelectionChange() {
+    if(this.selectedNode == null) {
+      this.menuItems[1].disabled = true;
+      this.menuItems[2].disabled = true;
+    } else {
+      this.menuItems[1].disabled = false;
+      this.menuItems[2].disabled = false;
+    }
   }
 }

@@ -14,6 +14,7 @@ import {BairroService} from '../../../service/bairro-service';
 import {MultiSelect} from 'primeng/multiselect';
 import {Residuo} from '../../../entity/Residuo';
 import {ResiduosService} from '../../../service/residuos-service';
+import {FormComponent} from '../../../entity/FormComponent';
 
 @Component({
   selector: 'app-ponto-coleta-form',
@@ -30,7 +31,7 @@ import {ResiduosService} from '../../../service/residuos-service';
   templateUrl: './ponto-coleta-form.html',
   styleUrl: '../../../template/templateForm.scss',
 })
-export class PontoColetaForm implements OnInit {
+export class PontoColetaForm implements OnInit, FormComponent {
 
   pontoColeta: PontoColeta = {
     nome: '',
@@ -44,6 +45,7 @@ export class PontoColetaForm implements OnInit {
   };
 
   formAtualizar: boolean = false;
+  isSalvo: boolean = false;
 
   bairroDisponivel: Bairro[] = [];
   bairroSelecionado!: Bairro;
@@ -94,6 +96,7 @@ export class PontoColetaForm implements OnInit {
 
     this.pontoColetaService.adicionar(this.pontoColeta).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -102,13 +105,13 @@ export class PontoColetaForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['pontoColeta']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar ponto de colta'
+          detail: err.error?.message || 'Erro ao cadastrar ponto de colta!'
         });
       }
     })
@@ -121,6 +124,7 @@ export class PontoColetaForm implements OnInit {
 
     this.pontoColetaService.atualizar(id, this.pontoColeta).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -129,13 +133,13 @@ export class PontoColetaForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['pontoColeta']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao atualizar ponto de colta'
+          detail: err.error?.message || 'Erro ao atualizar ponto de colta!'
         });
       }
     })

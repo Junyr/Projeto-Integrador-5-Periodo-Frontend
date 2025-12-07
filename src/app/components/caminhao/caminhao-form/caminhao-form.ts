@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Caminhao} from '../../../entity/Caminhao';
 import {InputNumberModule} from 'primeng/inputnumber';
 import {CaminhaoService} from '../../../service/caminhao-service';
+import {FormComponent} from '../../../entity/FormComponent';
 
 @Component({
   selector: 'app-caminhao-form',
@@ -29,7 +30,7 @@ import {CaminhaoService} from '../../../service/caminhao-service';
   templateUrl: './caminhao-form.html',
   styleUrl: '../../../template/templateForm.scss',
 })
-export class CaminhaoForm implements OnInit {
+export class CaminhaoForm implements OnInit, FormComponent {
 
   caminhao: Caminhao = {
     placa: '',
@@ -39,6 +40,7 @@ export class CaminhaoForm implements OnInit {
   };
 
   formAtualizar: boolean = false;
+  isSalvo: boolean = false;
 
   residuoDisponivel: Residuo[] = [];
   residuoSelecionado: Residuo[] = [];
@@ -76,6 +78,7 @@ export class CaminhaoForm implements OnInit {
 
     this.caminhaoService.adicionar(this.caminhao).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -84,13 +87,13 @@ export class CaminhaoForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['caminhao']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar caminhão'
+          detail: err.error?.message || 'Erro ao cadastrar caminhão!'
         });
       }
     })
@@ -102,6 +105,7 @@ export class CaminhaoForm implements OnInit {
 
     this.caminhaoService.atualizar(id, this.caminhao).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -110,13 +114,13 @@ export class CaminhaoForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['caminhao']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao atualizar caminhão'
+          detail: err.error?.message || 'Erro ao atualizar caminhão!'
         });
       }
     })

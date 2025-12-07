@@ -11,6 +11,7 @@ import {Itinerario} from '../../../entity/Itinerario';
 import {ItinerarioService} from '../../../service/itinerario-service';
 import {FormsModule} from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
+import {FormComponent} from '../../../entity/FormComponent';
 
 
 @Component({
@@ -27,7 +28,7 @@ import { DatePickerModule } from 'primeng/datepicker';
   templateUrl: './itinerario-form.html',
   styleUrl: '../../../template/templateForm.scss',
 })
-export class ItinerarioForm implements OnInit {
+export class ItinerarioForm implements OnInit, FormComponent {
 
   itinerario: Itinerario = {
     rotaId: 0,
@@ -36,12 +37,14 @@ export class ItinerarioForm implements OnInit {
 
   rotaDisponivel: Rota[] = [];
   rotaSelecionado!: Rota;
+  itinerarioRotaFiltrado: Itinerario[] = [];
 
   dataSelecionada: Date = new Date();
   hoje: Date = new Date();
   dataBloqueadas: Date[] = [];
 
   formAtualizar: boolean = false;
+  isSalvo: boolean = false;
 
   constructor(
     private router: Router,
@@ -76,11 +79,16 @@ export class ItinerarioForm implements OnInit {
 
   protected onSelecionarRota() {
     this.dataBloqueadas = [];
+    this.itinerarioRotaFiltrado = [];
 
     this.itinerarioService.listar().subscribe(itinerarios => {
-      itinerarios.forEach(it => {
-        this.dataBloqueadas.push(new Date(it.data + 'T00:00:00'));
-      });
+
+      this.itinerarioRotaFiltrado = itinerarios
+        .filter(it => it.rotaId === this.rotaSelecionado.id);
+
+      this.dataBloqueadas = this.itinerarioRotaFiltrado.map(it =>
+        new Date(it.data + 'T00:00:00')
+      );
     });
   }
 
@@ -91,6 +99,7 @@ export class ItinerarioForm implements OnInit {
 
     this.itinerarioService.adicionar(this.itinerario).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -99,13 +108,13 @@ export class ItinerarioForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['/itinerario']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar itinerario'!
+          detail: err.error?.message || 'Erro ao cadastrar itinerario!'!
         });
       }
     });
@@ -120,6 +129,7 @@ export class ItinerarioForm implements OnInit {
 
     this.itinerarioService.atualizar(id, this.itinerario).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -128,13 +138,13 @@ export class ItinerarioForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['/itinerario']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao atualizar itinerario'!
+          detail: err.error?.message || 'Erro ao atualizar itinerario!'!
         });
       }
     });

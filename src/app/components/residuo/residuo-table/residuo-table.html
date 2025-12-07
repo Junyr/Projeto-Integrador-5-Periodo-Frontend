@@ -1,42 +1,35 @@
 <p-toast></p-toast>
 
-<p-table [value]="residuo" [tableStyle]="{ 'min-width': '50rem' }">
-  <ng-template pTemplate="caption">
-    <div class="caption-container">
-      <span class="text-xl font-bold">Residuos Cadastrados</span>
+<div class="caption-container">
+  <span class="text-xl font-bold">Residuos</span>
+</div>
 
-      <p-button
-        icon="pi pi-plus"
-        (onClick)="adicionar()">
-      </p-button>
-    </div>
+<p-menubar [model]="menuItems">
+
+  <ng-template #item let-item>
+    <a pRipple class="flex items-center p-menubar-item-link" [class.p-disabled]="item.disabled">
+      <span>{{ item.label }}</span>
+    </a>
   </ng-template>
+
+</p-menubar>
+
+<p-table
+  [value]="residuo"
+  selectionMode="single"
+  [(selection)]="selectedNode"
+  (selectionChange)="onSelectionChange()"
+  [scrollable]="true"
+  [tableStyle]="{ 'min-width': '50rem' }">
 
   <ng-template #header>
     <tr>
       <th>Nome</th>
-      <th>Ações</th>
-
     </tr>
   </ng-template>
   <ng-template #body let-residuo>
-    <tr>
+    <tr [pSelectableRow]="residuo">
       <td>{{ residuo.tipo }}</td>
-      <td>
-        <p-button
-          icon="pi pi-pencil"
-          rounded="true"
-          severity="success"
-          (click)="atualizar(residuo.id)">
-        </p-button>
-
-        <p-button
-          icon="pi pi-trash"
-          rounded="true"
-          severity="danger"
-          (click)="deletar(residuo.id)">
-        </p-button>
-      </td>
     </tr>
   </ng-template>
 

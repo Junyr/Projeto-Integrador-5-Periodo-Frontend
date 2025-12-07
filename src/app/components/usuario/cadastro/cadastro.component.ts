@@ -8,6 +8,7 @@ import {UsuarioService} from '../../../service/usuario-service';
 import {Router} from '@angular/router';
 import { Toast } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import {FormComponent} from '../../../entity/FormComponent';
 
 
 @Component({
@@ -23,13 +24,15 @@ import { MessageService } from 'primeng/api';
   templateUrl: './cadastro.component.html',
   styleUrl: '../../../template/templateForm.scss',
 })
-export class CadastroComponent {
+export class CadastroComponent implements FormComponent{
 
-  usuario: Usuario = {
+  protected usuario: Usuario = {
     email: '',
     nome: '',
     senha: ''
   };
+
+  isSalvo: boolean = false;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -39,6 +42,7 @@ export class CadastroComponent {
   protected cadastrar() {
     this.usuarioService.adicionarUsuario(this.usuario).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -47,13 +51,13 @@ export class CadastroComponent {
 
         setTimeout(() => {
           this.router.navigate(['login']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar usuário'
+          detail: err.error?.message || 'Erro ao cadastrar usuário!'
         });
       }
     })

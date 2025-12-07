@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
 import {NgForOf, NgIf} from '@angular/common';
 import {TreeTableModule} from 'primeng/treetable';
-import {TreeNode} from 'primeng/api';
+import {MenuItem, MessageService, TreeNode} from 'primeng/api';
 import {Caminhao} from '../../../entity/Caminhao';
 import {Bairro} from '../../../entity/Bairro';
 import {Rua} from '../../../entity/Rua';
@@ -17,6 +17,9 @@ import {PontoColetaService} from '../../../service/ponto-coleta-service';
 import {Router} from '@angular/router';
 import {ItinerarioService} from '../../../service/itinerario-service';
 import {Rota} from '../../../entity/Rota';
+import {Toast} from 'primeng/toast';
+import {Menubar} from 'primeng/menubar';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
   selector: 'app-itinerario-table',
@@ -24,22 +27,28 @@ import {Rota} from '../../../entity/Rota';
     Button,
     NgForOf,
     NgIf,
-    TreeTableModule
+    TreeTableModule,
+    Toast,
+    Menubar,
+    Ripple
   ],
   templateUrl: './itinerario-table.html',
   styleUrl: '../../../template/templateTable.scss',
 })
 export class ItinerarioTable implements OnInit {
 
-  files: TreeNode[] = [];
-  cols: any[] = [];
+  protected files: TreeNode[] = [];
+  protected cols: any[] = [];
 
-  caminhoesMap = new Map<number, Caminhao>();
-  bairrosMap = new Map<number, Bairro>();
-  ruasMap = new Map<number, Rua>();
-  residuoMap = new Map<number, Residuo>();
-  pontoColetaMap = new Map<number, PontoColeta>();
-  rotaMap = new Map<number, Rota>();
+  protected menuItems: MenuItem[] = [];
+  protected selectedNode!: TreeNode;
+
+  protected caminhoesMap = new Map<number, Caminhao>();
+  protected bairrosMap = new Map<number, Bairro>();
+  protected ruasMap = new Map<number, Rua>();
+  protected residuoMap = new Map<number, Residuo>();
+  protected pontoColetaMap = new Map<number, PontoColeta>();
+  protected rotaMap = new Map<number, Rota>();
 
   constructor(
     private itinerarioService: ItinerarioService,
@@ -49,7 +58,8 @@ export class ItinerarioTable implements OnInit {
     private caminhaoService: CaminhaoService,
     private bairroService: BairroService,
     private pontoColetaService: PontoColetaService,
-    private router: Router) {}
+    private router: Router,
+    private messageService: MessageService) {}
 
   ngOnInit() {
     this.cols = [
@@ -57,10 +67,56 @@ export class ItinerarioTable implements OnInit {
       { field: 'valor', header: 'Valor' }
     ];
 
+    this.menuItems = [
+      {
+        label: 'Novo',
+        command: () => this.adicionar()
+      },
+      {
+        label: 'Editar',
+        command: () => this.atualizar(this.selectedNode.data.id),
+        disabled: true
+      },
+      {
+        label: 'Excluir',
+        command: () => this.deletar(this.selectedNode.data.id),
+        disabled: true
+      }
+    ];
+
     this.carregarTree();
   }
 
-  carregarTree() {
+  protected adicionar() {
+    this.router.navigate(['itinerario/adicionar']);
+  }
+
+  protected atualizar(id: number) {
+    this.router.navigate([`/itinerario/atualizar/${id}`]);
+  }
+
+  protected deletar (id: number) {
+    this.itinerarioService.deletar(id).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Itinerario deletado com sucesso!'
+        });
+
+        this.carregarTree();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err.error?.message || 'Erro ao deletar itinerario!'
+        });
+      }
+    });
+  }
+
+  protected carregarTree() {
     this.caminhaoService.listar().subscribe(caminhao => {
       caminhao.forEach(c => this.caminhoesMap.set(c.id!, c));
 
@@ -177,21 +233,17 @@ export class ItinerarioTable implements OnInit {
     })
   }
 
-  deletar(id: number) {
-    this.itinerarioService.deletar(id).subscribe(() => {
-      this.carregarTree();
-    });
-  }
-
-  protected adicionar() {
-    this.router.navigate(['itinerario/adicionar']);
-  }
-
-  protected atualizar(id: number) {
-    this.router.navigate([`/itinerario/atualizar/${id}`]);
-  }
-
   protected formatarDataBR(data: Date | string): string {
     return new Date(data + 'T00:00:00').toLocaleDateString('pt-BR');
+  }
+
+  protected onSelectionChange() {
+    if(this.selectedNode == null) {
+      this.menuItems[1].disabled = true;
+      this.menuItems[2].disabled = true;
+    } else {
+      this.menuItems[1].disabled = false;
+      this.menuItems[2].disabled = false;
+    }
   }
 }

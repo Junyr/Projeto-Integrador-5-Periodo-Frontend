@@ -1,5 +1,16 @@
 .caption-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0.8rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button-action {
+  margin-right: 0.5rem;
+}
+
+.summary-table {
+  text-align: center;
+  margin-top: 1rem;
 }

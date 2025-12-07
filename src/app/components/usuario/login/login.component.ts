@@ -46,7 +46,7 @@ export class LoginComponent {
         });
 
         setTimeout(() => {
-          this.router.navigate(['home']);
+          this.router.navigate(['itinerario']);
         }, 0);
       },
       error: (err) => {

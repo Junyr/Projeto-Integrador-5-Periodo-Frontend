@@ -8,6 +8,7 @@ import {Toast} from 'primeng/toast';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Bairro} from '../../../entity/Bairro';
 import {BairroService} from '../../../service/bairro-service';
+import {FormComponent} from '../../../entity/FormComponent';
 
 @Component({
   selector: 'app-bairro-form',
@@ -23,13 +24,14 @@ import {BairroService} from '../../../service/bairro-service';
   templateUrl: './bairro-form.html',
   styleUrl: '../../../template/templateForm.scss',
 })
-export class BairroForm implements OnInit {
+export class BairroForm implements OnInit, FormComponent {
 
   bairro: Bairro = {
     nome: ''
   };
 
   formAtualizar: boolean = false;
+  isSalvo: boolean = false;
 
   constructor(
     private bairroService: BairroService,
@@ -51,6 +53,7 @@ export class BairroForm implements OnInit {
   protected cadastrar() {
     this.bairroService.adicionar(this.bairro).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -59,13 +62,13 @@ export class BairroForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['bairro']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar bairro'
+          detail: err.error?.message || 'Erro ao cadastrar bairro!'
         });
       }
     })
@@ -76,6 +79,7 @@ export class BairroForm implements OnInit {
 
     this.bairroService.atualizar(id, this.bairro).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -84,13 +88,13 @@ export class BairroForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['bairro']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao atualizar bairro'
+          detail: err.error?.message || 'Erro ao atualizar bairro!'
         });
       }
     })

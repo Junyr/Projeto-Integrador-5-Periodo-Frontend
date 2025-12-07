@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
 import {NgIf} from '@angular/common';
 import {UsuarioInfo} from '../../entity/UsuarioInfo';
 import {UsuarioService} from '../../service/usuario-service';
 import {Router} from '@angular/router';
 import { Toast } from 'primeng/toast';
-import {MessageService} from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
+import {Menubar} from 'primeng/menubar';
+import {Ripple} from 'primeng/ripple';
 
 
 @Component({
@@ -14,24 +16,67 @@ import {MessageService} from 'primeng/api';
     Button,
     NgIf,
     Toast,
+    Menubar,
+    Ripple,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
-  usuario: UsuarioInfo | null = null;
+  protected usuario: UsuarioInfo | null = null;
+  protected menuItems: MenuItem[] = [];
 
   constructor(
     private usuarioService: UsuarioService,
     private messageService: MessageService,
-    protected router: Router) {
+    private router: Router) {}
+
+  ngOnInit(): void {
+    this.menuItems = [
+      {
+        label: 'Itinerário',
+        command: () => this.router.navigate(['itinerario']),
+        disabled: this.isAtItinerario()
+      },
+      {
+        label: 'Rota',
+        command: () => this.router.navigate(['rota']),
+        disabled: this.isAtRota()
+      },
+      {
+        label: 'Ponto de Coleta',
+        command: () => this.router.navigate(['pontoColeta']),
+        disabled: this.isAtPonto()
+      },
+      {
+        label: 'Caminhão',
+        command: () => this.router.navigate(['caminhao']),
+        disabled: this.isAtCaminhao()
+      },
+      {
+        label: 'Residuo',
+        command: () => this.router.navigate(['residuo']),
+        disabled: this.isAtResiduo()
+      },
+      {
+        label: 'Bairro',
+        command: () => this.router.navigate(['bairro']),
+        disabled: this.isAtBairro()
+      },
+      {
+        label: 'Rua',
+        command: () => this.router.navigate(['rua']),
+        disabled: this.isAtRua()
+      }
+    ];
+
     this.usuarioService.usuarioInfo$.subscribe(u => {
       this.usuario = u;
     });
   }
 
-  sair() {
+  protected sair() {
     this.usuarioService.logout();
     this.messageService.add({
       severity: 'success',
@@ -44,19 +89,19 @@ export class HeaderComponent {
     }, 0);
   }
 
-  getIsAuthorized(): boolean {
+  protected getIsAuthorized(): boolean {
     return this.usuarioService.getIsAuthorized();
   }
 
-  isAtRota(): boolean {
+  protected isAtRota(): boolean {
     return this.router.url === '/rota';
   }
 
-  isAtPonto(): boolean {
+  protected isAtPonto(): boolean {
     return this.router.url === '/pontoColeta';
   }
 
-  isAtCaminhao(): boolean {
+  protected isAtCaminhao(): boolean {
     return this.router.url === '/caminhao';
   }
 
@@ -64,11 +109,11 @@ export class HeaderComponent {
     return this.router.url === '/residuo';
   }
 
-  isAtBairro() {
+  protected isAtBairro() {
     return this.router.url === '/bairro';
   }
 
-  isAtRua() {
+  protected isAtRua() {
     return this.router.url === '/rua';
   }
 

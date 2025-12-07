@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TreeTableModule} from 'primeng/treetable';
-import {TreeNode} from 'primeng/api';
+import {MenuItem, MessageService, TreeNode} from 'primeng/api';
 import {RotaService} from '../../../service/rota-service';
 import {CommonModule, NgForOf, NgIf} from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -18,6 +18,9 @@ import {BairroService} from '../../../service/bairro-service';
 import {PontoColetaService} from '../../../service/ponto-coleta-service';
 import {PontoColeta} from '../../../entity/PontoColeta';
 import {Router} from '@angular/router';
+import {Toast} from 'primeng/toast';
+import {Menubar} from 'primeng/menubar';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
   selector: 'app-rota-table',
@@ -30,20 +33,26 @@ import {Router} from '@angular/router';
     DialogModule,
     PickListModule,
     FormsModule,
+    Toast,
+    Menubar,
+    Ripple,
   ],
   templateUrl: './rota-table.html',
   styleUrl: '../../../template/templateTable.scss',
 })
 export class RotaTable implements OnInit {
 
-  files: TreeNode[] = [];
-  cols: any[] = [];
+  protected files: TreeNode[] = [];
+  protected cols: any[] = [];
 
-  caminhoesMap = new Map<number, Caminhao>();
-  bairrosMap = new Map<number, Bairro>();
-  ruasMap = new Map<number, Rua>();
-  residuoMap = new Map<number, Residuo>();
-  pontoColetaMap = new Map<number, PontoColeta>();
+  protected menuItems: MenuItem[] = [];
+  protected selectedNode!: TreeNode;
+
+  protected caminhoesMap = new Map<number, Caminhao>();
+  protected bairrosMap = new Map<number, Bairro>();
+  protected ruasMap = new Map<number, Rua>();
+  protected residuoMap = new Map<number, Residuo>();
+  protected pontoColetaMap = new Map<number, PontoColeta>();
 
   constructor(
     private rotaService: RotaService,
@@ -52,7 +61,8 @@ export class RotaTable implements OnInit {
     private caminhaoService: CaminhaoService,
     private bairroService: BairroService,
     private pontoColetaService: PontoColetaService,
-    private router: Router) {}
+    private router: Router,
+    private messageService: MessageService) {}
 
   ngOnInit() {
     this.cols = [
@@ -60,10 +70,56 @@ export class RotaTable implements OnInit {
       { field: 'valor', header: 'Valor' }
     ];
 
+    this.menuItems = [
+      {
+        label: 'Novo',
+        command: () => this.adicionar()
+      },
+      {
+        label: 'Editar',
+        command: () => this.atualizarRota(this.selectedNode.data.id),
+        disabled: true
+      },
+      {
+        label: 'Excluir',
+        command: () => this.deletar(this.selectedNode.data.id),
+        disabled: true
+      }
+    ];
+
     this.carregarTree();
   }
 
-  carregarTree() {
+  protected adicionar() {
+    this.router.navigate(['rota/adicionar']);
+  }
+
+  protected atualizarRota(id: number) {
+    this.router.navigate([`/rota/atualizar/${id}`]);
+  }
+
+  protected deletar(id: number) {
+    this.rotaService.deletar(id).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Rota deletado com sucesso!'
+        });
+
+        this.carregarTree();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: err.error?.message || 'Erro ao deletar rota!'
+        });
+      }
+    });
+  }
+
+  protected carregarTree() {
     this.caminhaoService.listar().subscribe(caminhao => {
       caminhao.forEach(c => this.caminhoesMap.set(c.id!, c));
 
@@ -170,21 +226,13 @@ export class RotaTable implements OnInit {
     })
   }
 
-  deletar(id: number) {
-    this.rotaService.deletar(id).subscribe(() => {
-      this.carregarTree();
-    });
-  }
-
-  protected adicionar() {
-    this.router.navigate(['rota/adicionar']);
-  }
-
-  protected atualizarRota(id: number) {
-    this.router.navigate([`/rota/atualizar/${id}`]);
-  }
-
-  protected pontoColeta() {
-    this.router.navigate(['pontoColeta']);
+  onSelectionChange() {
+    if(this.selectedNode == null) {
+      this.menuItems[1].disabled = true;
+      this.menuItems[2].disabled = true;
+    } else {
+      this.menuItems[1].disabled = false;
+      this.menuItems[2].disabled = false;
+    }
   }
 }

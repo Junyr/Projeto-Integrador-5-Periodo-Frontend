@@ -26,18 +26,12 @@
   font-weight: 600;
 }
 
-.btn-voltar {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-}
-
 /* CAMPOS */
 .field {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 1.4rem;
+  margin-bottom: 0.8rem;
 }
 
 /* BOTÕES */
@@ -48,17 +42,4 @@
   width: 100%;
   margin-top: 1.4rem;
   gap: 1rem;
-}
-
-.btn-principal {
-  min-width: 160px;
-}
-
-.btn-secundario {
-  min-width: 140px;
-}
-
-.field label {
-  margin-bottom: 0.4rem;
-  display: block;
 }

@@ -1,55 +1,16 @@
 <p-toast></p-toast>
 
-<ng-container *ngIf="getIsAuthorized()">
+<div class="header-session" *ngIf="getIsAuthorized()">
   <p *ngIf="usuario as u"> {{ u.nome }} </p>
   <p-button label="Sair" (onClick)="sair()"></p-button>
-</ng-container>
+</div>
 
-<ng-container>
-  <p-button
-    label="Itinerario"
-    (onClick)="router.navigate(['itinerario'])"
-    [disabled]="isAtItinerario()">
-  </p-button>
+<p-menubar *ngIf="getIsAuthorized()" [model]="menuItems">
 
-  <p-button
-    label="Rota"
-    (onClick)="router.navigate(['rota'])"
-    [disabled]="isAtRota()">
-  </p-button>
+  <ng-template #item let-item>
+    <a pRipple class="flex items-center p-menubar-item-link">
+      <span>{{ item.label }}</span>
+    </a>
+  </ng-template>
 
-  <p-button
-    label="Ponto de Coleta"
-    (onClick)="router.navigate(['pontoColeta'])"
-    [disabled]="isAtPonto()">
-  </p-button>
-
-  <p-button
-    label="Caminhão"
-    (onClick)="router.navigate(['caminhao'])"
-    [disabled]="isAtCaminhao()">
-  </p-button>
-
-  <p-button
-    label="Residuo"
-    (onClick)="router.navigate(['residuo'])"
-    [disabled]="isAtResiduo()">
-  </p-button>
-
-  <p-button
-    label="Bairro"
-    (onClick)="router.navigate(['bairro'])"
-    [disabled]="isAtBairro()">
-  </p-button>
-
-  <p-button
-    label="Rua"
-    (onClick)="router.navigate(['rua'])"
-    [disabled]="isAtRua()">
-  </p-button>
-
-  <p-button
-    label="Logout"
-    (onClick)="sair()">
-  </p-button>
-</ng-container>
+</p-menubar>

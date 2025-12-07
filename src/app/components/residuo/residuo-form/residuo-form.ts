@@ -8,6 +8,7 @@ import {Toast} from "primeng/toast";
 import {ActivatedRoute, Router} from '@angular/router';
 import {Residuo} from '../../../entity/Residuo';
 import {ResiduosService} from '../../../service/residuos-service';
+import {FormComponent} from '../../../entity/FormComponent';
 
 @Component({
   selector: 'app-residuo-form',
@@ -22,13 +23,14 @@ import {ResiduosService} from '../../../service/residuos-service';
   templateUrl: './residuo-form.html',
   styleUrl: '../../../template/templateForm.scss',
 })
-export class ResiduoForm implements OnInit {
+export class ResiduoForm implements OnInit, FormComponent {
 
   residuo: Residuo = {
     tipo: ''
   };
 
   formAtualizar: boolean = false;
+  isSalvo: boolean = false;
 
   constructor(
     private residuoService: ResiduosService,
@@ -50,6 +52,7 @@ export class ResiduoForm implements OnInit {
   protected cadastrar() {
     this.residuoService.adicionar(this.residuo).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -58,13 +61,13 @@ export class ResiduoForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['residuo']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar residuo'
+          detail: err.error?.message || 'Erro ao cadastrar residuo!'
         });
       }
     })
@@ -75,6 +78,7 @@ export class ResiduoForm implements OnInit {
 
     this.residuoService.atualizar(id, this.residuo).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -83,13 +87,13 @@ export class ResiduoForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['residuo']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao atualizar residuo'
+          detail: err.error?.message || 'Erro ao atualizar residuo!'
         });
       }
     })

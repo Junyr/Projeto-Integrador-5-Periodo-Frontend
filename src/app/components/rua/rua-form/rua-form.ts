@@ -12,6 +12,7 @@ import {RuasService} from '../../../service/ruas-service';
 import {Bairro} from '../../../entity/Bairro';
 import {BairroService} from '../../../service/bairro-service';
 import {RuaRequestDTO} from '../../../entity/RuaRequestDTO';
+import {FormComponent} from '../../../entity/FormComponent';
 
 @Component({
   selector: 'app-rua-form',
@@ -28,7 +29,7 @@ import {RuaRequestDTO} from '../../../entity/RuaRequestDTO';
   templateUrl: './rua-form.html',
   styleUrl: '../../../template/templateForm.scss',
 })
-export class RuaForm implements OnInit {
+export class RuaForm implements OnInit, FormComponent {
 
   rua: Rua = {
     origem: {
@@ -47,6 +48,7 @@ export class RuaForm implements OnInit {
   };
 
   formAtualizar: boolean = false;
+  isSalvo: boolean = false;
 
   bairroDisponivel: Bairro[] = [];
   BairroDisponivelFiltrado: Bairro[] = [];
@@ -65,10 +67,11 @@ export class RuaForm implements OnInit {
     const id = this.activatedRoute.snapshot.params['id'];
     if(id != null) {
       this.ruaService.buscar(id).subscribe(rua => {
-        console.log(rua);
         this.rua = rua;
 
         this.bairroOrigemSelecionado = rua.origem;
+        this.OnSelectionOrigem();
+
         this.bairroDestinoSelecionado = rua.destino;
       })
 
@@ -85,10 +88,9 @@ export class RuaForm implements OnInit {
     this.ruaRequest.destinoId = this.bairroDestinoSelecionado.id!;
     this.ruaRequest.distanciaKm = this.rua.distanciaKm!;
 
-    console.log(this.ruaRequest);
-
     this.ruaService.adicionar(this.ruaRequest).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -97,13 +99,13 @@ export class RuaForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['rua']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao cadastrar rua'
+          detail: err.error?.message || 'Erro ao cadastrar rua!'
         });
       }
     })
@@ -115,10 +117,9 @@ export class RuaForm implements OnInit {
     this.ruaRequest.destinoId = this.bairroDestinoSelecionado.id!;
     this.ruaRequest.distanciaKm = this.rua.distanciaKm;
 
-    console.log(this.ruaRequest);
-
     this.ruaService.atualizar(id, this.ruaRequest).subscribe({
       next: () => {
+        this.isSalvo = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
@@ -127,13 +128,13 @@ export class RuaForm implements OnInit {
 
         setTimeout(() => {
           this.router.navigate(['rua']);
-        }, 1500);
+        }, 0);
       },
       error: (err) => {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
-          detail: err.error?.message || 'Erro ao atualizar rua'
+          detail: err.error?.message || 'Erro ao atualizar rua!'
         });
       }
     })
