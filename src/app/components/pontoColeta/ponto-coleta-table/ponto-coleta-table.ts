@@ -3,7 +3,7 @@ import {Button} from 'primeng/button';
 import {NgForOf, NgIf} from '@angular/common';
 import {TreeTableModule} from 'primeng/treetable';
 import {MenuItem, TreeNode} from 'primeng/api';
-import {MessageService, PrimeTemplate} from 'primeng/api';
+import {MessageService} from 'primeng/api';
 import {Bairro} from '../../../entity/Bairro';
 import {Residuo} from '../../../entity/Residuo';
 import {ResiduosService} from '../../../service/residuos-service';

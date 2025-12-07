@@ -7,7 +7,7 @@ import {Bairro} from '../../../entity/Bairro';
 import {Toast} from 'primeng/toast';
 import {Menubar} from 'primeng/menubar';
 import {Ripple} from 'primeng/ripple';
-import {MenuItem, MessageService, TreeNode} from 'primeng/api';
+import {MenuItem, MessageService} from 'primeng/api';
 import {TreeTableModule} from 'primeng/treetable';
 
 @Component({

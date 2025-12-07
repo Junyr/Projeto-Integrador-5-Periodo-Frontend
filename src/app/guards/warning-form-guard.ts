@@ -3,7 +3,7 @@ import {ConfirmationService} from 'primeng/api';
 import {inject} from '@angular/core';
 import {FormComponent} from '../entity/FormComponent';
 
-export const warningFormGuard: CanDeactivateFn<FormComponent> = (component, currentRoute, currentState, nextState) => {
+export const warningFormGuard: CanDeactivateFn<FormComponent> = (component) => {
   if(!component.isSalvo) {
     const confirmationService = inject(ConfirmationService);
 

@@ -13,7 +13,6 @@ import {Rota} from '../../../entity/Rota';
 import {Select} from 'primeng/select';
 import {MultiSelect} from 'primeng/multiselect';
 import {Button} from 'primeng/button';
-import {InputText} from 'primeng/inputtext';
 import {ResiduosService} from '../../../service/residuos-service';
 import {MessageService, PrimeTemplate} from 'primeng/api';
 import {RotaRequestDTO} from '../../../entity/RotaRequestDTO';
