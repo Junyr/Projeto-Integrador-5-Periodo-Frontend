@@ -72,4 +72,7 @@ export class HeaderComponent {
     return this.router.url === '/rua';
   }
 
+  protected isAtItinerario() {
+    return this.router.url === '/itinerario';
+  }
 }

@@ -1,0 +1,66 @@
+<p-toast></p-toast>
+
+<div class="form-container">
+  <p-card styleClass="card-form">
+
+    <ng-template pTemplate="header">
+      <div class="caption-container">
+
+        <span class="title-card">
+          {{ formAtualizar ? 'Atualizar' : 'Cadastrar' }}
+        </span>
+
+        <p-button
+          icon="pi pi-angle-left"
+          severity="success"
+          (onClick)="voltar()"
+          styleClass="btn-voltar">
+        </p-button>
+      </div>
+    </ng-template>
+
+    <span class="p-float-label field">
+      <label>Rota</label>
+      <p-select
+        [options]="rotaDisponivel"
+        [(ngModel)]="rotaSelecionado"
+        optionLabel="label"
+        [filter]="true"
+        placeholder="Selecione uma rota"
+        class="w-full"
+        (onChange)="onSelecionarRota()">
+      </p-select>
+    </span>
+
+    <span class="p-float-label field">
+      <label>Data</label>
+      <p-date-picker
+        [(ngModel)]="dataSelecionada"
+        [disabledDays]="[0, 6]"
+        [disabledDates]="dataBloqueadas"
+        [minDate]="hoje"
+        dateFormat="dd/mm/yy"
+        inputId="data"
+        class="w-full"
+        [disabled]="!rotaSelecionado">
+      </p-date-picker>
+    </span>
+
+    <div class="button-group">
+
+      <p-button
+        [label]="formAtualizar ? 'Atualizar' : 'Cadastrar'"
+        (click)="formAtualizar ? atualizar() : cadastrar()"
+        styleClass="btn-principal">
+      </p-button>
+
+      <p-button
+        label="Voltar"
+        (click)="voltar()"
+        styleClass="btn-secundario">
+      </p-button>
+
+    </div>
+
+  </p-card>
+</div>

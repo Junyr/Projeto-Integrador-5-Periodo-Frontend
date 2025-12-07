@@ -7,6 +7,12 @@
 
 <ng-container>
   <p-button
+    label="Itinerario"
+    (onClick)="router.navigate(['itinerario'])"
+    [disabled]="isAtItinerario()">
+  </p-button>
+
+  <p-button
     label="Rota"
     (onClick)="router.navigate(['rota'])"
     [disabled]="isAtRota()">
@@ -40,5 +46,10 @@
     label="Rua"
     (onClick)="router.navigate(['rua'])"
     [disabled]="isAtRua()">
+  </p-button>
+
+  <p-button
+    label="Logout"
+    (onClick)="sair()">
   </p-button>
 </ng-container>

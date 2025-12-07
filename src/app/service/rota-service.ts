@@ -32,5 +32,4 @@ export class RotaService {
   deletar(id: number) {
     return this.http.delete(`${this.apiUrl}/deletar/${id}`);
   }
-
 }

@@ -14,12 +14,17 @@ import {RuaTable} from './components/rua/rua-table/rua-table';
 import {RuaForm} from './components/rua/rua-form/rua-form';
 import {ResiduoTable} from './components/residuo/residuo-table/residuo-table';
 import {ResiduoForm} from './components/residuo/residuo-form/residuo-form';
+import {ItinerarioTable} from './components/itinerario/itinerario-table/itinerario-table';
+import {ItinerarioForm} from './components/itinerario/itinerario-form/itinerario-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'rota', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent },
+  { path: 'itinerario', component: ItinerarioTable/**, canActivate: [authGuard]*/ },
+  { path: 'itinerario/adicionar', component: ItinerarioForm/**, canActivate: [authGuard]*/ },
+  { path: 'itinerario/atualizar/:id', component: ItinerarioForm/**, canActivate: [authGuard]*/ },
   { path: 'rota', component: RotaTable/**, canActivate: [authGuard]*/ },
   { path: 'rota/adicionar', component: RotaForms/**, canActivate: [authGuard]*/ },
   { path: 'rota/atualizar/:id', component: RotaForms/**, canActivate: [authGuard]*/ },
