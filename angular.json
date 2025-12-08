@@ -90,6 +90,12 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              "src/assets",
+              {
+                "glob": "GreenLogSolutionIcon.ico",
+                "input": "src/assets/icon",
+                "output": "/assets/icon"
               }
             ],
             "styles": [
